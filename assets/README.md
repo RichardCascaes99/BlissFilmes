@@ -44,3 +44,15 @@ Observacao importante:
   `/Volumes/RIC 4TB/...`.
 - Para publicar em hospedagem, copie os videos para dentro do projeto com os
   mesmos nomes.
+
+## Fotos dos colaboradores (secao Time Bliss)
+- `assets/team/colaborador-01.jpg`
+- `assets/team/colaborador-02.jpg`
+- `assets/team/colaborador-03.jpg`
+- `assets/team/colaborador-04.jpg`
+- `assets/team/colaborador-05.jpg`
+- `assets/team/colaborador-06.jpg`
+
+Observacao:
+- As fotos aparecem em cards verticais abaixo da faixa preta.
+- No desktop, ao passar o mouse no card, ele expande e mostra o texto de descricao.

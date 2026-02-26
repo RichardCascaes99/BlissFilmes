@@ -180,10 +180,43 @@ body {
 }
 
 .hero {
+  position: relative;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.hero-insta {
+  position: absolute;
+  top: clamp(0.8rem, 2vw, 1.4rem);
+  right: clamp(0.8rem, 2vw, 1.4rem);
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid #111111;
+  background: #111111;
+  color: #ffffff;
+  text-decoration: none;
+  z-index: 12;
+  transition: transform var(--timing), opacity var(--timing), background var(--timing), color var(--timing);
+}
+
+.hero-insta:hover,
+.hero-insta:focus-visible {
+  transform: translateY(-2px);
+  background: #ffffff;
+  color: #111111;
+}
+
+.hero-insta svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
 }
 
 .hero-main {
@@ -310,6 +343,124 @@ body {
 
 .marquee-empty[hidden] {
   display: none !important;
+}
+
+.team {
+  padding-block: clamp(2rem, 5vw, 4rem) clamp(1rem, 2.4vw, 1.8rem);
+}
+
+.team-head {
+  margin-bottom: clamp(1rem, 2.2vw, 1.8rem);
+}
+
+.team-kicker {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #3f3f3f;
+}
+
+.team-head h2 {
+  margin: 0.45rem 0 0;
+  font-family: "Metropolis", sans-serif;
+  font-weight: 500;
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+  line-height: 0.95;
+}
+
+.team-strip {
+  display: flex;
+  gap: clamp(0.45rem, 0.9vw, 0.9rem);
+  min-height: clamp(360px, 38vw, 500px);
+}
+
+.team-card {
+  flex: 1 1 0;
+  min-width: 86px;
+  display: flex;
+  align-items: stretch;
+  border: 1px solid #121212;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #0d0d0d;
+  color: #f5f5f5;
+  transition: flex 420ms var(--timing);
+}
+
+.team-photo {
+  flex: 1 1 auto;
+  min-width: 110px;
+  margin: 0;
+  background: #141414;
+}
+
+.team-photo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.team-photo .media-fallback {
+  background: linear-gradient(145deg, #151515, #050505);
+  color: #f5f5f5;
+}
+
+.team-photo .media-fallback code {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.team-copy {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 1.3rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  background: #0b0b0b;
+  transition: width 420ms var(--timing), opacity 240ms ease, padding 420ms var(--timing);
+}
+
+.team-copy p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.team-copy .team-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #ffffff;
+}
+
+.team-card--richard {
+  border-color: rgba(17, 17, 17, 0.14);
+  background: #ffffff;
+}
+
+.team-card--richard .team-photo {
+  background: #ffffff;
+}
+
+.team-card:hover,
+.team-card:focus-within {
+  flex: 2.1 1 0;
+}
+
+.team-card:hover .team-copy,
+.team-card:focus-within .team-copy {
+  width: clamp(170px, 17vw, 250px);
+  opacity: 1;
+  padding: 1.3rem 1.15rem;
 }
 
 .projects {
@@ -481,6 +632,35 @@ code {
 }
 
 @media (max-width: 1000px) {
+  .team-strip {
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    min-height: 360px;
+    scrollbar-width: thin;
+  }
+
+  .team-card {
+    flex: 0 0 min(70vw, 360px);
+    min-width: 280px;
+  }
+
+  .team-card:hover,
+  .team-card:focus-within {
+    flex: 0 0 min(70vw, 360px);
+  }
+
+  .team-copy {
+    width: clamp(150px, 25vw, 220px);
+    opacity: 1;
+    padding: 1.1rem 0.95rem;
+  }
+
+  .team-card:hover .team-copy,
+  .team-card:focus-within .team-copy {
+    width: clamp(150px, 25vw, 220px);
+    padding: 1.1rem 0.95rem;
+  }
+
   .project-row {
     grid-template-columns: 1fr;
     min-height: unset;
@@ -495,6 +675,13 @@ code {
 @media (max-width: 740px) {
   .shell {
     width: min(100% - 1.3rem, var(--max-width));
+  }
+
+  .hero-insta {
+    top: 0.55rem;
+    right: 0.65rem;
+    width: 40px;
+    height: 40px;
   }
 
   .hero-main {
@@ -513,6 +700,36 @@ code {
   .hero-creating {
     width: min(94vw, 560px);
     align-self: flex-end;
+  }
+
+  .team {
+    padding-top: 1.5rem;
+  }
+
+  .team-strip {
+    gap: 0.55rem;
+  }
+
+  .team-card {
+    flex: 0 0 86vw;
+    min-width: 86vw;
+    min-height: 330px;
+  }
+
+  .team-card:hover,
+  .team-card:focus-within {
+    flex: 0 0 86vw;
+  }
+
+  .team-photo {
+    min-width: 44%;
+  }
+
+  .team-copy,
+  .team-card:hover .team-copy,
+  .team-card:focus-within .team-copy {
+    width: 56%;
+    padding: 1rem 0.85rem;
   }
 
   .marquee-group {
