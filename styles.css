@@ -349,6 +349,10 @@ body {
   padding-block: clamp(2rem, 5vw, 4rem) clamp(1rem, 2.4vw, 1.8rem);
 }
 
+.shell.team {
+  width: min(100% - 0.9rem, 1680px);
+}
+
 .team-head {
   margin-bottom: clamp(1rem, 2.2vw, 1.8rem);
 }
@@ -675,6 +679,10 @@ code {
 @media (max-width: 740px) {
   .shell {
     width: min(100% - 1.3rem, var(--max-width));
+  }
+
+  .shell.team {
+    width: min(100% - 0.9rem, 1680px);
   }
 
   .hero-insta {
