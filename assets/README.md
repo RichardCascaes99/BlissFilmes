@@ -2,38 +2,41 @@
 
 Use estes caminhos para o site carregar os arquivos automaticamente:
 
+## Logo principal
 - `assets/brand/bliss-logo.png`
-  - Logo principal exibido na secao inicial.
+  - Logo exibido no primeiro bloco da home (lado esquerdo).
 
+## Logos de clientes (marquee na faixa preta)
+- `assets/brand/clients/porto.png`
+- `assets/brand/clients/vem-pra-porto.png`
+- `assets/brand/clients/bank.png`
+- `assets/brand/clients/saude.png`
+- `assets/brand/clients/seguro.png`
+- `assets/brand/clients/servico-1.png`
+- `assets/brand/clients/enel.png`
+- `assets/brand/clients/xbox.png`
+- `assets/brand/clients/rittes.png`
+- `assets/brand/clients/sam-hair.png`
+- `assets/brand/clients/aventura.png`
+- `assets/brand/clients/santo-pet.png`
+
+Observacoes:
+- O site converte visualmente os logos para branco na faixa preta.
+- Se quiser mais logos, repita o padrao no HTML com novos arquivos.
+
+## Videos de portfolio
 - `assets/portfolio/videos/premio-agilidade.mp4`
-  - Origem: `2025_05_26_Premio_Agilidade_v02_leg.mp4`
-
 - `assets/portfolio/videos/cultura-de-dados.mp4`
-  - Origem: `cultura_de_dados_SEM_LEG_v01.mp4`
-
 - `assets/portfolio/videos/teaser-linkedin-manifesto.mp4`
-  - Origem: `linkedin_teaser_manifestodados.mp4`
-
 - `assets/portfolio/videos/man-ig-carreiras.mp4`
-  - Origem: `ManIGCarreiras_High_SemLegenda.mp4`
-
 - `assets/portfolio/videos/mes-orgulho-insta.mp4`
-  - Origem: `Mes_do_Orgulho_insta.mp4`
-
 - `assets/portfolio/videos/mes-orgulho-v02.mp4`
-  - Origem: `Mes_do_Orgulho_V02.mp4`
-
 - `assets/portfolio/videos/teaser-cultura-dados.mp4`
-  - Origem: `teaser_cultura_de_dados_LEG_01.mp4`
-
 - `assets/portfolio/videos/teaser-fuga.mp4`
-  - Origem: `teaser_fuga_TEXTO_01.mp4`
-
 - `assets/portfolio/videos/triple-bill.mp4`
-  - Origem: `triple_bill_v01.mp4`
 
 Observacao importante:
-- Hoje esses arquivos foram vinculados via link simbolico para o disco externo
+- Hoje os videos podem estar vinculados por link simbolico para o disco externo
   `/Volumes/RIC 4TB/...`.
 - Para publicar em hospedagem, copie os videos para dentro do projeto com os
   mesmos nomes.

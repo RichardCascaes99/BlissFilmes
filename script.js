@@ -11,8 +11,8 @@ if ("IntersectionObserver" in window) {
       });
     },
     {
-      threshold: 0.2,
-      rootMargin: "0px 0px -32px 0px",
+      threshold: 0.16,
+      rootMargin: "0px 0px -24px 0px",
     }
   );
 
@@ -49,9 +49,9 @@ mediaSlots.forEach((slot) => {
   }
 });
 
-const portfolioVideos = document.querySelectorAll(".project-grid .project-media video");
+const projectVideos = document.querySelectorAll(".project-media video");
 
-if (portfolioVideos.length > 0) {
+if (projectVideos.length > 0) {
   if ("IntersectionObserver" in window && !prefersReducedMotion) {
     const videoObserver = new IntersectionObserver(
       (entries) => {
@@ -72,86 +72,58 @@ if (portfolioVideos.length > 0) {
       { threshold: 0.45 }
     );
 
-    portfolioVideos.forEach((video) => videoObserver.observe(video));
+    projectVideos.forEach((video) => videoObserver.observe(video));
   } else {
-    portfolioVideos.forEach((video) => {
+    projectVideos.forEach((video) => {
       video.controls = true;
     });
   }
 }
 
-const carousel = document.querySelector("[data-carousel]");
-const track = carousel?.querySelector(".carousel-track");
-const slides = track ? [...track.children] : [];
-const nextButton = carousel?.querySelector("[data-next]");
-const prevButton = carousel?.querySelector("[data-prev]");
-const dotsNav = document.querySelector("[data-dots]");
+const clientLogos = document.querySelectorAll(".client-logo");
+const marqueeEmpty = document.querySelector(".marquee-empty");
 
-if (carousel && track && slides.length > 0 && dotsNav) {
-  let activeIndex = 0;
-  let autoRotateTimer = null;
+if (marqueeEmpty && clientLogos.length > 0) {
+  marqueeEmpty.hidden = true;
 
-  slides.forEach((_, index) => {
-    const dot = document.createElement("button");
-    dot.type = "button";
-    dot.setAttribute("aria-label", `Ir para etapa ${index + 1}`);
-    dot.dataset.index = String(index);
-    if (index === activeIndex) {
-      dot.setAttribute("aria-current", "true");
+  let resolved = 0;
+  let successful = 0;
+
+  const handleSettled = () => {
+    resolved += 1;
+    if (resolved === clientLogos.length) {
+      // Mostra mensagem apenas se TODAS as logos falharem.
+      marqueeEmpty.hidden = successful > 0;
     }
-    dotsNav.appendChild(dot);
-  });
+  };
 
-  const dots = [...dotsNav.children];
-
-  const goToSlide = (index) => {
-    activeIndex = (index + slides.length) % slides.length;
-    track.style.transform = `translateX(-${activeIndex * 100}%)`;
-    dots.forEach((dot, dotIndex) => {
-      if (dotIndex === activeIndex) {
-        dot.setAttribute("aria-current", "true");
+  clientLogos.forEach((logo) => {
+    if (logo.complete) {
+      if (logo.naturalWidth > 0) {
+        successful += 1;
       } else {
-        dot.removeAttribute("aria-current");
+        logo.classList.add("is-missing");
       }
-    });
-  };
-
-  const startAutoRotate = () => {
-    stopAutoRotate();
-    autoRotateTimer = window.setInterval(() => {
-      goToSlide(activeIndex + 1);
-    }, 5500);
-  };
-
-  const stopAutoRotate = () => {
-    if (autoRotateTimer) {
-      window.clearInterval(autoRotateTimer);
-      autoRotateTimer = null;
+      handleSettled();
+      return;
     }
-  };
 
-  nextButton?.addEventListener("click", () => {
-    goToSlide(activeIndex + 1);
-    startAutoRotate();
+    logo.addEventListener(
+      "load",
+      () => {
+        successful += 1;
+        handleSettled();
+      },
+      { once: true }
+    );
+
+    logo.addEventListener(
+      "error",
+      () => {
+        logo.classList.add("is-missing");
+        handleSettled();
+      },
+      { once: true }
+    );
   });
-
-  prevButton?.addEventListener("click", () => {
-    goToSlide(activeIndex - 1);
-    startAutoRotate();
-  });
-
-  dotsNav.addEventListener("click", (event) => {
-    const target = event.target;
-    if (target instanceof HTMLButtonElement && target.dataset.index) {
-      goToSlide(Number(target.dataset.index));
-      startAutoRotate();
-    }
-  });
-
-  carousel.addEventListener("mouseenter", stopAutoRotate);
-  carousel.addEventListener("mouseleave", startAutoRotate);
-  carousel.addEventListener("focusin", stopAutoRotate);
-  carousel.addEventListener("focusout", startAutoRotate);
-
-  startAutoRotate();
 }

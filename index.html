@@ -8,406 +8,196 @@
       content="Bliss Filmes - produtora audiovisual para campanhas, marcas e conteudo digital."
     />
     <title>Bliss Filmes | Produtora Audiovisual</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Syne:wght@500;700;800&amp;display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="site-bg" aria-hidden="true"></div>
+    <header class="hero" id="home">
+      <div class="shell hero-main">
+        <figure class="hero-logo media-slot" aria-label="Logo da Bliss Filmes">
+          <img
+            src="./assets/brand/bliss-logo.png"
+            alt="Logo da Bliss Filmes"
+            loading="eager"
+          />
+          <figcaption class="media-fallback">
+            Adicione o logo em <code>/assets/brand/bliss-logo.png</code>
+          </figcaption>
+        </figure>
+      </div>
 
-    <header class="topbar">
-      <div class="shell topbar-inner">
-        <a class="brand" href="#home">
-          <span class="brand-dot" aria-hidden="true"></span>
-          bliss filmes
-        </a>
-        <nav class="nav" aria-label="Menu principal">
-          <a href="#portfolio">Portfolio</a>
-          <a href="#services">Servicos</a>
-          <a href="#process">Processo</a>
-          <a href="#contact">Contato</a>
-        </nav>
+      <div class="hero-bottom">
+        <div class="shell">
+          <p class="hero-claim">Creating Moments of Inspiring Stories</p>
+        </div>
+
+        <div class="client-marquee" aria-label="Marcas que ja trabalharam com a Bliss Filmes">
+          <div class="marquee-track">
+            <div class="marquee-group">
+              <img class="client-logo" src="./assets/brand/clients/porto.png" alt="Porto" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/vem-pra-porto.png" alt="Vem pra Porto" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/bank.png" alt="Bank" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/saude.png" alt="Saude" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/seguro.png" alt="Seguro" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/servico-1.png" alt="Servico 1" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/enel.png" alt="Enel" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/xbox.png" alt="Xbox" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/rittes.png" alt="Rittes" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/sam-hair.png" alt="Sam Hair" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/aventura.png" alt="Aventura" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/santo-pet.png" alt="Santo Pet" loading="lazy" />
+            </div>
+
+            <div class="marquee-group" aria-hidden="true">
+              <img class="client-logo" src="./assets/brand/clients/porto.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/vem-pra-porto.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/bank.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/saude.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/seguro.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/servico-1.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/enel.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/xbox.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/rittes.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/sam-hair.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/aventura.png" alt="" loading="lazy" />
+              <img class="client-logo" src="./assets/brand/clients/santo-pet.png" alt="" loading="lazy" />
+            </div>
+          </div>
+
+          <p class="marquee-empty" hidden>
+            Adicione os logos em <code>/assets/brand/clients/</code> com os nomes:
+            <code>porto.png</code>, <code>vem-pra-porto.png</code>,
+            <code>bank.png</code>, <code>saude.png</code>, <code>seguro.png</code>,
+            <code>servico-1.png</code>, <code>enel.png</code>,
+            <code>xbox.png</code>, <code>rittes.png</code> e
+            <code>sam-hair.png</code>, <code>aventura.png</code> e
+            <code>santo-pet.png</code>.
+          </p>
+        </div>
       </div>
     </header>
 
-    <main id="home">
-      <section class="hero shell">
-        <p class="eyebrow intro-fade">Produtora Audiovisual</p>
-        <h1 class="hero-title intro-fade">
-          Filmes com linguagem cinematografica para marcas que querem impacto
-          real.
-        </h1>
-        <p class="hero-copy intro-fade">
-          Comercial, institucional, cobertura e conteudo para redes. Da ideia ao
-          corte final, a Bliss Filmes transforma briefing em narrativa visual.
-        </p>
-        <div class="hero-actions intro-fade">
-          <a
-            class="btn btn-dark"
-            href="https://www.instagram.com/bliss.filmes/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Instagram @bliss.filmes
-          </a>
-          <a class="btn btn-light" href="#portfolio">Ver portfolio</a>
-        </div>
+    <main id="portfolio" class="shell projects">
+      <header class="projects-head reveal">
+        <p class="projects-kicker">Portfolio</p>
+        <h1>Projetos em sequencia para voce preencher com os detalhes finais.</h1>
+      </header>
 
-        <div class="hero-grid intro-fade">
-          <div class="hero-logo-card media-slot">
-            <img
-              src="./assets/brand/bliss-logo.png"
-              alt="Logo da Bliss Filmes"
-              loading="eager"
-            />
-            <div class="media-fallback">
-              Suba o logo em <code>/assets/brand/bliss-logo.png</code>
-            </div>
+      <section class="project-list">
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/premio-agilidade.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 01"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/premio-agilidade.mp4</code></div>
           </div>
-          <ul class="quick-stats">
-            <li>
-              <strong>End-to-End</strong>
-              <span>Roteiro, captacao, direcao e pos-producao no mesmo fluxo.</span>
-            </li>
-            <li>
-              <strong>Formatos atuais</strong>
-              <span>Filmamos para campanhas, reels, stories e YouTube.</span>
-            </li>
-            <li>
-              <strong>Entrega objetiva</strong>
-              <span>Planejamento visual com foco em resultado de marca.</span>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section id="portfolio" class="projects shell reveal">
-        <div class="section-head">
-          <p class="eyebrow">Portfolio</p>
-          <h2>Alguns trabalhos reais da Bliss Filmes.</h2>
-          <p class="section-copy">
-            Estes cards estao conectados aos seus videos em
-            <code>/assets/portfolio/videos</code>.
-          </p>
-        </div>
-        <div class="project-grid">
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/premio-agilidade.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Premio Agilidade"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/premio-agilidade.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Premio Agilidade</h3>
-              <p>Filme institucional para premiacao e comunicacao interna.</p>
-              <span>Institucional</span>
-            </div>
-          </article>
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/cultura-de-dados.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Cultura de Dados"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/cultura-de-dados.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Cultura de Dados</h3>
-              <p>Video principal com narrativa para cultura e transformacao digital.</p>
-              <span>Branded Content</span>
-            </div>
-          </article>
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/teaser-linkedin-manifesto.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Teaser Linkedin Manifesto"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/teaser-linkedin-manifesto.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Teaser Manifesto (LinkedIn)</h3>
-              <p>Corte curto para divulgacao e awareness em rede profissional.</p>
-              <span>Social Video</span>
-            </div>
-          </article>
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/man-ig-carreiras.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Manifesto Carreiras para Instagram"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/man-ig-carreiras.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Manifesto Carreiras</h3>
-              <p>Peca vertical para atracao de talentos e reforco de employer brand.</p>
-              <span>Instagram</span>
-            </div>
-          </article>
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/mes-orgulho-insta.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Mes do Orgulho para Instagram"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/mes-orgulho-insta.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Mes do Orgulho (Insta)</h3>
-              <p>Versao vertical da campanha para distribuicao em redes sociais.</p>
-              <span>Campanha Social</span>
-            </div>
-          </article>
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/mes-orgulho-v02.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Mes do Orgulho versao 2"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/mes-orgulho-v02.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Mes do Orgulho V02</h3>
-              <p>Filme principal da campanha em formato horizontal de alto impacto.</p>
-              <span>Campanha</span>
-            </div>
-          </article>
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/teaser-cultura-dados.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Teaser Cultura de Dados"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/teaser-cultura-dados.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Teaser Cultura de Dados</h3>
-              <p>Corte de performance para ampliar alcance da campanha principal.</p>
-              <span>Teaser</span>
-            </div>
-          </article>
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/teaser-fuga.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Teaser Fuga"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/teaser-fuga.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Teaser Fuga</h3>
-              <p>Peca de lancamento com ritmo rapido para captacao de atencao.</p>
-              <span>Teaser</span>
-            </div>
-          </article>
-          <article class="project-card video-card">
-            <div class="project-media media-slot">
-              <video
-                src="./assets/portfolio/videos/triple-bill.mp4"
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                aria-label="Projeto Triple Bill"
-              ></video>
-              <div class="media-fallback">
-                <code>/assets/portfolio/videos/triple-bill.mp4</code>
-              </div>
-            </div>
-            <div class="project-content">
-              <h3>Triple Bill</h3>
-              <p>Conteudo audiovisual para comunicacao multiplataforma.</p>
-              <span>Multiformato</span>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="services" class="services shell reveal">
-        <div class="section-head">
-          <p class="eyebrow">Servicos</p>
-          <h2>Producao completa para marcas, empresas e criadores.</h2>
-        </div>
-        <div class="services-grid">
-          <article>
-            <h3>Filmes Comerciais</h3>
-            <p>Campanhas para fortalecer posicionamento e gerar lembranca.</p>
-          </article>
-          <article>
-            <h3>Videos Institucionais</h3>
-            <p>Narrativas que apresentam cultura, produto e proposta de valor.</p>
-          </article>
-          <article>
-            <h3>Branded Content</h3>
-            <p>Conteudo original para conectar marca e audiencia com autenticidade.</p>
-          </article>
-          <article>
-            <h3>Eventos e Coberturas</h3>
-            <p>Registro dinamico com entregas rapidas para redes e press kit.</p>
-          </article>
-          <article>
-            <h3>Conteudo para Redes</h3>
-            <p>Recortes verticais e formatos pensados para Instagram e TikTok.</p>
-          </article>
-          <article>
-            <h3>Pos-producao</h3>
-            <p>Edicao, color, trilha e finalizacao com padrao visual consistente.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="process" class="process reveal">
-        <div class="shell">
-          <div class="section-head light">
-            <p class="eyebrow">Processo Bliss</p>
-            <h2>Metodo simples para tirar projetos do papel com velocidade.</h2>
+          <div class="project-copy">
+            <p class="project-index">Projeto 01</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para descrever o objetivo, contexto e impacto deste case. Este campo fica preparado para sua versao final.</p>
           </div>
+        </article>
 
-          <div class="carousel" data-carousel>
-            <button class="carousel-btn" type="button" aria-label="Slide anterior" data-prev>
-              &#8592;
-            </button>
-            <div class="carousel-window">
-              <div class="carousel-track">
-                <article class="quote-card">
-                  <p class="step-label">Etapa 01</p>
-                  <h3>Briefing e Direcao Criativa</h3>
-                  <span>Alinhamos objetivo, publico e referencias antes de gravar.</span>
-                </article>
-                <article class="quote-card">
-                  <p class="step-label">Etapa 02</p>
-                  <h3>Pre-producao e Plano de Cena</h3>
-                  <span>Roteiro, cronograma, equipe e planejamento tecnico definidos.</span>
-                </article>
-                <article class="quote-card">
-                  <p class="step-label">Etapa 03</p>
-                  <h3>Captacao e Direcao no Set</h3>
-                  <span>Gravacao organizada para manter linguagem, ritmo e qualidade.</span>
-                </article>
-                <article class="quote-card">
-                  <p class="step-label">Etapa 04</p>
-                  <h3>Edicao e Entrega Final</h3>
-                  <span>Finalizacao em multiplos formatos, pronta para publicacao.</span>
-                </article>
-              </div>
-            </div>
-            <button class="carousel-btn" type="button" aria-label="Proximo slide" data-next>
-              &#8594;
-            </button>
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/cultura-de-dados.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 02"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/cultura-de-dados.mp4</code></div>
           </div>
-
-          <div class="dots" data-dots aria-label="Navegacao do carrossel"></div>
-        </div>
-      </section>
-
-      <section id="contact" class="contact shell reveal">
-        <div class="contact-card">
-          <p class="eyebrow">Contato</p>
-          <h2>Vamos produzir o proximo filme da sua marca.</h2>
-          <p>
-            Para solicitar orcamento, envie mensagem no Instagram com contexto,
-            prazo e objetivo do projeto.
-          </p>
-          <div class="hero-actions">
-            <a
-              class="btn btn-dark"
-              href="https://www.instagram.com/bliss.filmes/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Abrir Instagram
-            </a>
-            <a class="btn btn-light" href="#assets-guide">Guia de uploads</a>
+          <div class="project-copy">
+            <p class="project-index">Projeto 02</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para descrever direcao criativa, formato de entrega e resultados esperados. Pode ser substituido depois.</p>
           </div>
-        </div>
-      </section>
+        </article>
 
-      <section id="assets-guide" class="assets-guide shell reveal">
-        <div class="guide-card">
-          <p class="eyebrow">Guia rapido</p>
-          <h2>Arquivos que o site ja reconhece.</h2>
-          <ul class="asset-list">
-            <li>
-              <code>/assets/brand/bliss-logo.png</code> para logo principal na
-              dobra inicial.
-            </li>
-            <li>
-              Videos em <code>/assets/portfolio/videos/*.mp4</code> para os cards
-              do portfolio.
-            </li>
-            <li>
-              Para deploy em hospedagem, copie os videos para dentro do projeto
-              (nao use link para disco externo).
-            </li>
-          </ul>
-        </div>
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/teaser-linkedin-manifesto.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 03"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/teaser-linkedin-manifesto.mp4</code></div>
+          </div>
+          <div class="project-copy">
+            <p class="project-index">Projeto 03</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para dar contexto ao projeto, ao desafio e ao racional criativo utilizado na peca audiovisual.</p>
+          </div>
+        </article>
+
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/man-ig-carreiras.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 04"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/man-ig-carreiras.mp4</code></div>
+          </div>
+          <div class="project-copy">
+            <p class="project-index">Projeto 04</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para registrar publico-alvo, proposta de narrativa e resultado visual desejado para a comunicacao.</p>
+          </div>
+        </article>
+
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/mes-orgulho-insta.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 05"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/mes-orgulho-insta.mp4</code></div>
+          </div>
+          <div class="project-copy">
+            <p class="project-index">Projeto 05</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para inserir descricoes curtas com foco em ideia central, direcao de cena e valor para a marca.</p>
+          </div>
+        </article>
+
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/mes-orgulho-v02.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 06"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/mes-orgulho-v02.mp4</code></div>
+          </div>
+          <div class="project-copy">
+            <p class="project-index">Projeto 06</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para explicar estrategia, formato e adaptacoes de linguagem para diferentes pontos de contato.</p>
+          </div>
+        </article>
+
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/teaser-cultura-dados.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 07"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/teaser-cultura-dados.mp4</code></div>
+          </div>
+          <div class="project-copy">
+            <p class="project-index">Projeto 07</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para descrever a construcao da narrativa, linguagem visual e intencao editorial da peca.</p>
+          </div>
+        </article>
+
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/teaser-fuga.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 08"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/teaser-fuga.mp4</code></div>
+          </div>
+          <div class="project-copy">
+            <p class="project-index">Projeto 08</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para detalhar objetivo criativo, posicionamento da marca e potencial de distribuicao do conteudo.</p>
+          </div>
+        </article>
+
+        <article class="project-row reveal">
+          <div class="project-media media-slot">
+            <video src="./assets/portfolio/videos/triple-bill.mp4" muted loop playsinline preload="metadata" aria-label="Projeto 09"></video>
+            <div class="media-fallback"><code>/assets/portfolio/videos/triple-bill.mp4</code></div>
+          </div>
+          <div class="project-copy">
+            <p class="project-index">Projeto 09</p>
+            <h2>Titulo generico do projeto</h2>
+            <p>Texto generico para completar com informacoes finais de escopo, processo e impacto do trabalho apresentado.</p>
+          </div>
+        </article>
       </section>
     </main>
 
-    <footer class="footer shell">
-      <p>2026 © Bliss Filmes</p>
-      <a
-        href="https://www.instagram.com/bliss.filmes/"
-        target="_blank"
-        rel="noreferrer"
-      >
-        @bliss.filmes
-      </a>
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <p>2026 © Bliss Filmes</p>
+        <a href="https://www.instagram.com/bliss.filmes/" target="_blank" rel="noreferrer">@bliss.filmes</a>
+      </div>
     </footer>
 
     <script src="./script.js"></script>
