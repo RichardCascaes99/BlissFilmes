@@ -250,20 +250,24 @@ body {
 
 .client-marquee {
   position: relative;
+  display: flex;
+  align-items: center;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
   background: var(--hero-band);
   overflow: hidden;
-  width: min(100% - 3.2rem, 1120px);
-  min-height: 74px;
-  margin-inline: auto;
+  width: 100%;
+  height: 56px;
+  min-height: 56px;
+  max-height: 56px;
+  margin-inline: 0;
 }
 
 .marquee-track {
   width: max-content;
   display: flex;
   align-items: center;
-  animation: marquee-right 68s linear infinite;
+  animation: marquee-right var(--marquee-duration, 56s) linear infinite;
 }
 
 .marquee-group {
@@ -271,23 +275,23 @@ body {
   display: flex;
   align-items: center;
   gap: clamp(1.2rem, 2.2vw, 2.4rem);
-  padding: 0.55rem 0;
+  padding: 0;
 }
 
 .client-logo {
   display: block;
   flex: none;
   width: auto;
-  height: clamp(48px, 4.2vw, 70px);
-  max-width: 420px;
+  height: clamp(48px, 4.4vw, 70px);
+  max-width: 520px;
   object-fit: contain;
   filter: none;
   opacity: 1;
 }
 
 .client-logo--xl {
-  height: clamp(88px, 7vw, 130px);
-  max-width: 560px;
+  height: clamp(80px, 7vw, 116px);
+  max-width: 720px;
 }
 
 .marquee-empty {
@@ -469,7 +473,7 @@ code {
 
 @keyframes marquee-right {
   from {
-    transform: translateX(-50%);
+    transform: translateX(calc(-1 * var(--marquee-distance, 0px)));
   }
   to {
     transform: translateX(0);
@@ -516,18 +520,20 @@ code {
   }
 
   .client-marquee {
-    width: min(100% - 1.3rem, 1120px);
-    min-height: 66px;
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    max-height: 48px;
   }
 
   .client-logo {
-    height: 30px;
-    max-width: 240px;
+    height: 40px;
+    max-width: 280px;
   }
 
   .client-logo--xl {
-    height: 60px;
-    max-width: 300px;
+    height: 64px;
+    max-width: 380px;
   }
 }
 

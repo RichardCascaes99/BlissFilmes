@@ -80,9 +80,65 @@ if (projectVideos.length > 0) {
   }
 }
 
-const clientLogos = document.querySelectorAll(".client-logo");
 const marqueeEmpty = document.querySelector(".marquee-empty");
 
 if (marqueeEmpty) {
   marqueeEmpty.hidden = true;
+}
+
+const marquee = document.querySelector(".client-marquee");
+const marqueeTrack = marquee?.querySelector(".marquee-track");
+const marqueeSeedGroup = marqueeTrack?.querySelector(".marquee-group");
+
+if (marquee && marqueeTrack && marqueeSeedGroup) {
+  const sourceMarkup = marqueeSeedGroup.innerHTML;
+  let resizeFrame = 0;
+
+  const makeGroup = (hidden = false) => {
+    const group = document.createElement("div");
+    group.className = "marquee-group";
+    if (hidden) {
+      group.setAttribute("aria-hidden", "true");
+      group.dataset.clone = "true";
+    }
+    group.innerHTML = sourceMarkup;
+    return group;
+  };
+
+  const rebuildMarquee = () => {
+    marqueeTrack.innerHTML = "";
+
+    const firstGroup = makeGroup(false);
+    marqueeTrack.appendChild(firstGroup);
+
+    const baseWidth = Math.max(firstGroup.getBoundingClientRect().width, 1);
+    const targetWidth = marquee.clientWidth * 3;
+    let totalWidth = baseWidth;
+
+    while (totalWidth < targetWidth) {
+      const clone = makeGroup(true);
+      marqueeTrack.appendChild(clone);
+      totalWidth += clone.getBoundingClientRect().width;
+    }
+
+    const speedPxPerSecond = 55;
+    const duration = Math.max(baseWidth / speedPxPerSecond, 14);
+    marqueeTrack.style.setProperty("--marquee-distance", `${baseWidth}px`);
+    marqueeTrack.style.setProperty("--marquee-duration", `${duration}s`);
+  };
+
+  const scheduleRebuild = () => {
+    cancelAnimationFrame(resizeFrame);
+    resizeFrame = requestAnimationFrame(rebuildMarquee);
+  };
+
+  if ("ResizeObserver" in window) {
+    const resizeObserver = new ResizeObserver(scheduleRebuild);
+    resizeObserver.observe(marquee);
+  } else {
+    window.addEventListener("resize", scheduleRebuild);
+  }
+
+  window.addEventListener("load", scheduleRebuild);
+  scheduleRebuild();
 }
