@@ -174,6 +174,11 @@ body {
   line-height: 1.55;
 }
 
+main {
+  background: #000000;
+  color: #ffffff;
+}
+
 .shell {
   width: min(100% - 2.4rem, var(--max-width));
   margin-inline: auto;
@@ -350,11 +355,14 @@ body {
 }
 
 .shell.team {
-  width: min(100% - 0.9rem, 1680px);
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
 }
 
 .team-head {
   margin-bottom: clamp(1rem, 2.2vw, 1.8rem);
+  padding-inline: clamp(0.7rem, 2.2vw, 1.6rem);
 }
 
 .team-kicker {
@@ -363,7 +371,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: #3f3f3f;
+  color: rgba(255, 255, 255, 0.74);
 }
 
 .team-head h2 {
@@ -394,6 +402,7 @@ body {
 }
 
 .team-photo {
+  position: relative;
   flex: 1 1 auto;
   min-width: 110px;
   margin: 0;
@@ -405,6 +414,39 @@ body {
   height: 100%;
   display: block;
   object-fit: cover;
+}
+
+.team-insta {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.56);
+  color: #ffffff;
+  text-decoration: none;
+  z-index: 3;
+  transition: transform var(--timing), background var(--timing), border-color var(--timing);
+}
+
+.team-insta:hover,
+.team-insta:focus-visible {
+  transform: translateY(-1px);
+  background: #ffffff;
+  color: #111111;
+  border-color: #ffffff;
+}
+
+.team-insta svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
 }
 
 .team-photo .media-fallback {
@@ -592,7 +634,8 @@ code {
 }
 
 .site-footer {
-  border-top: 1px solid var(--line-soft);
+  background: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
   padding-block: 1.2rem 1.8rem;
 }
 
@@ -606,11 +649,11 @@ code {
 
 .footer-inner p {
   margin: 0;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .footer-inner a {
-  color: var(--ink);
+  color: #ffffff;
   text-decoration: none;
   font-weight: 700;
 }
@@ -682,7 +725,7 @@ code {
   }
 
   .shell.team {
-    width: min(100% - 0.9rem, 1680px);
+    width: 100%;
   }
 
   .hero-insta {
@@ -731,6 +774,13 @@ code {
 
   .team-photo {
     min-width: 44%;
+  }
+
+  .team-insta {
+    top: 0.45rem;
+    right: 0.45rem;
+    width: 32px;
+    height: 32px;
   }
 
   .team-copy,
