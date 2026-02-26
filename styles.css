@@ -191,25 +191,48 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  gap: clamp(1rem, 2.4vw, 2.8rem);
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: clamp(0.8rem, 3vw, 2.4rem);
   padding-block: clamp(2rem, 7vw, 5.8rem);
 }
 
 .hero-logo {
-  width: min(44vw, 520px);
-  min-width: 220px;
-  aspect-ratio: 1.2 / 1;
+  flex: 0 1 clamp(300px, 42vw, 620px);
+  width: clamp(300px, 42vw, 620px);
   margin: 0;
-  border: 1px solid var(--line-soft);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--bg);
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
 }
 
 .hero-logo img {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
-  padding: clamp(1.4rem, 2.6vw, 2.2rem);
+  padding: 0;
+}
+
+.hero-creating {
+  flex: 0 1 clamp(280px, 44vw, 640px);
+  width: clamp(280px, 44vw, 640px);
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+}
+
+.hero-creating img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  padding: 0;
 }
 
 .hero-bottom {
@@ -231,37 +254,40 @@ body {
   border-bottom: 1px solid #000;
   background: var(--hero-band);
   overflow: hidden;
-  min-height: 92px;
+  width: min(100% - 3.2rem, 1120px);
+  min-height: 74px;
+  margin-inline: auto;
 }
 
 .marquee-track {
   width: max-content;
   display: flex;
   align-items: center;
-  animation: marquee 68s linear infinite reverse;
+  animation: marquee-right 68s linear infinite;
 }
 
 .marquee-group {
   flex: none;
   display: flex;
   align-items: center;
-  gap: clamp(2.6rem, 4.2vw, 5rem);
-  padding: 1.5rem clamp(1.4rem, 2.6vw, 2.2rem);
+  gap: clamp(1.2rem, 2.2vw, 2.4rem);
+  padding: 0.55rem 0;
 }
 
 .client-logo {
   display: block;
   flex: none;
   width: auto;
-  height: clamp(18px, 2.1vw, 28px);
-  max-width: 180px;
+  height: clamp(48px, 4.2vw, 70px);
+  max-width: 420px;
   object-fit: contain;
-  filter: grayscale(1) brightness(0) invert(1);
-  opacity: 0.92;
+  filter: none;
+  opacity: 1;
 }
 
-.client-logo.is-missing {
-  display: none;
+.client-logo--xl {
+  height: clamp(88px, 7vw, 130px);
+  max-width: 560px;
 }
 
 .marquee-empty {
@@ -276,6 +302,10 @@ body {
   letter-spacing: 0.01em;
   padding: 0.8rem;
   background: #0a0a0a;
+}
+
+.marquee-empty[hidden] {
+  display: none !important;
 }
 
 .projects {
@@ -437,12 +467,12 @@ code {
   transform: translateY(0);
 }
 
-@keyframes marquee {
+@keyframes marquee-right {
   from {
-    transform: translateX(0);
+    transform: translateX(-50%);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(0);
   }
 }
 
@@ -464,21 +494,40 @@ code {
   }
 
   .hero-main {
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    padding-inline: 0.65rem;
   }
 
   .hero-logo {
-    width: min(72vw, 460px);
-    min-width: 180px;
+    width: min(92vw, 520px);
+  }
+
+  .hero-creating {
+    width: min(94vw, 560px);
+    align-self: flex-end;
   }
 
   .marquee-group {
     gap: 2.1rem;
   }
 
+  .client-marquee {
+    width: min(100% - 1.3rem, 1120px);
+    min-height: 66px;
+  }
+
   .client-logo {
-    height: 18px;
-    max-width: 120px;
+    height: 30px;
+    max-width: 240px;
+  }
+
+  .client-logo--xl {
+    height: 60px;
+    max-width: 300px;
   }
 }
 

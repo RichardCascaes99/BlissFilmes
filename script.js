@@ -83,47 +83,6 @@ if (projectVideos.length > 0) {
 const clientLogos = document.querySelectorAll(".client-logo");
 const marqueeEmpty = document.querySelector(".marquee-empty");
 
-if (marqueeEmpty && clientLogos.length > 0) {
+if (marqueeEmpty) {
   marqueeEmpty.hidden = true;
-
-  let resolved = 0;
-  let successful = 0;
-
-  const handleSettled = () => {
-    resolved += 1;
-    if (resolved === clientLogos.length) {
-      // Mostra mensagem apenas se TODAS as logos falharem.
-      marqueeEmpty.hidden = successful > 0;
-    }
-  };
-
-  clientLogos.forEach((logo) => {
-    if (logo.complete) {
-      if (logo.naturalWidth > 0) {
-        successful += 1;
-      } else {
-        logo.classList.add("is-missing");
-      }
-      handleSettled();
-      return;
-    }
-
-    logo.addEventListener(
-      "load",
-      () => {
-        successful += 1;
-        handleSettled();
-      },
-      { once: true }
-    );
-
-    logo.addEventListener(
-      "error",
-      () => {
-        logo.classList.add("is-missing");
-        handleSettled();
-      },
-      { once: true }
-    );
-  });
 }

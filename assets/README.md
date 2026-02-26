@@ -3,8 +3,12 @@
 Use estes caminhos para o site carregar os arquivos automaticamente:
 
 ## Logo principal
-- `assets/brand/bliss-logo.png`
+- `assets/brand/bliss-logo-principal.png`
   - Logo exibido no primeiro bloco da home (lado esquerdo).
+
+## Imagem auxiliar da hero
+- `assets/brand/creating.png`
+  - Imagem exibida ao lado do logo principal na tela inicial.
 
 ## Logos de clientes (marquee na faixa preta)
 - `assets/brand/clients/porto.png`
@@ -21,7 +25,7 @@ Use estes caminhos para o site carregar os arquivos automaticamente:
 - `assets/brand/clients/santo-pet.png`
 
 Observacoes:
-- O site converte visualmente os logos para branco na faixa preta.
+- O site usa os logos na cor original na faixa preta.
 - Se quiser mais logos, repita o padrao no HTML com novos arquivos.
 
 ## Videos de portfolio
