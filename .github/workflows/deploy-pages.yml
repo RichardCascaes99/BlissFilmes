@@ -39,6 +39,17 @@ jobs:
             -not -path './.git/*' \
             -not -path './.github/*' \
             -not -path './_site/*' \
+            -not -path './assets/team/*.jpg' \
+            -not -path './assets/team/*.jpeg' \
+            -not -path './assets/portfolio/videos/02-novos/*' \
+            -not -path './assets/portfolio/videos/festa-porto/*' \
+            -not -path './assets/portfolio/videos/vem como se sente bem/*' \
+            -not -path './assets/portfolio/videos/Bliss_Filmes_hhh_4K_v06.mp4' \
+            -not -path './assets/portfolio/videos/Cillo_Manifesto_V02-2_LEG.mp4' \
+            -not -path './assets/portfolio/videos/GPTW__botao_4K_LEG_v03.mp4' \
+            -not -path './assets/portfolio/videos/MK_OF_Consciencia_Negra_v01_LEG.mp4' \
+            -not -path './assets/portfolio/videos/manifesto em baixa.mp4' \
+            -not -path './assets/portfolio/videos/instituto_video_aniversario_4k_03.mp4' \
             -print0)
 
       - name: Upload artifact
