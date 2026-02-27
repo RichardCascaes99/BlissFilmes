@@ -12,19 +12,33 @@
   </head>
   <body>
     <header class="hero" id="home">
-      <a
-        class="hero-insta"
-        href="https://www.instagram.com/bliss.filmes/"
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Instagram da Bliss Filmes"
-      >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-          <circle cx="12" cy="12" r="4.2"></circle>
-          <circle cx="17.4" cy="6.6" r="1"></circle>
-        </svg>
-      </a>
+      <div class="hero-socials" aria-label="Redes sociais da Bliss Filmes">
+        <a
+          class="hero-insta"
+          href="https://www.instagram.com/bliss.filmes/"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Instagram da Bliss Filmes"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+            <circle cx="12" cy="12" r="4.2"></circle>
+            <circle cx="17.4" cy="6.6" r="1"></circle>
+          </svg>
+        </a>
+        <a
+          class="hero-insta"
+          href="https://w.app/xvzkup"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="WhatsApp da Bliss Filmes"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.6-4.2A8.5 8.5 0 1 1 20.5 11.5z"></path>
+            <path d="M9.1 8.8c.2-.4.4-.4.6-.4h.5c.2 0 .4.1.5.4l.5 1.3c.1.2 0 .5-.1.6l-.4.5c-.1.1-.2.3-.1.5.2.4.6.9 1.1 1.4.6.6 1.1.9 1.5 1.1.2.1.4 0 .5-.1l.5-.6c.1-.2.3-.2.5-.1l1.3.5c.2.1.4.3.3.5l-.2.8c0 .3-.3.5-.5.7-.3.2-.7.4-1.1.4-1 0-2.2-.5-3.4-1.6-1.2-1-2-2.3-2.2-3.4-.1-.4 0-.8.2-1.1.2-.2.4-.4.6-.5z"></path>
+          </svg>
+        </a>
+      </div>
 
       <div class="shell hero-main">
         <figure class="hero-logo media-slot" aria-label="Logo da Bliss Filmes">
@@ -129,8 +143,7 @@
           </article>
 
           <article class="team-card" role="listitem" tabindex="0">
-            <figure class="team-photo media-slot" aria-label="Foto do colaborador 02">
-              <img src="./assets/team/pepe.jpg" alt="Pepe" loading="lazy" />
+            <figure class="team-photo team-photo--placeholder" aria-label="Foto do colaborador 02 indisponível">
               <a
                 class="team-insta"
                 href="https://www.instagram.com/peperreis/"
@@ -144,7 +157,7 @@
                   <circle cx="17.4" cy="6.6" r="1"></circle>
                 </svg>
               </a>
-              <figcaption class="media-fallback">Adicione a foto em <code>/assets/team/pepe.jpg</code></figcaption>
+              <span class="team-photo-placeholder-text">Foto em atualização</span>
             </figure>
             <div class="team-copy">
               <p class="team-name">Pepe</p>
@@ -200,7 +213,7 @@
             </div>
           </article>
 
-          <article class="team-card" role="listitem" tabindex="0">
+          <article class="team-card team-card--aldo" role="listitem" tabindex="0">
             <figure class="team-photo media-slot" aria-label="Foto do colaborador 05">
               <img src="./assets/team/aldo.jpg" alt="Aldo" loading="lazy" />
               <a
@@ -224,7 +237,7 @@
             </div>
           </article>
 
-          <article class="team-card" role="listitem" tabindex="0">
+          <article class="team-card team-card--ian" role="listitem" tabindex="0">
             <figure class="team-photo media-slot" aria-label="Foto do colaborador 06">
               <img src="./assets/team/ian.jpg" alt="Ian" loading="lazy" />
               <a
@@ -326,36 +339,30 @@
         <article class="project-screen reveal">
           <div class="project-media media-slot">
             <video
-              src="./assets/portfolio/videos/02-novos/FDL_Cobertura_v04%20-%20Trilha%201.mp4"
+              src="./assets/portfolio/videos/vem%20como%20se%20sente%20bem/Vem_Como_Se_Sente_Bem_com_legenda_4k_v01.mp4"
               autoplay
               muted
               loop
               playsinline
               preload="metadata"
-              aria-label="Projeto FDL Cobertura"
+              aria-label="Projeto Vem Como se Sente Bem"
             ></video>
             <div class="media-fallback">
-              <code>/assets/portfolio/videos/02-novos/FDL_Cobertura_v04 - Trilha 1.mp4</code>
+              <code>/assets/portfolio/videos/vem como se sente bem/Vem_Como_Se_Sente_Bem_com_legenda_4k_v01.mp4</code>
             </div>
           </div>
-
           <div class="project-overlay">
             <div class="project-copy">
-              <p class="project-index">Projeto 01</p>
-              <h2>FDL Cobertura</h2>
+              <p class="project-index">Projeto Porto</p>
+              <h2>Vem Como se Sente Bem</h2>
               <p>
-                Espaco reservado para o texto descritivo do projeto: objetivos,
-                desafios criativos, estrategia e impacto da campanha.
+                Foram 22 dias planejando locações, personagens, animações, equipe, cronograma e — é claro — figurinos, tudo isso para entregar um vídeo que fosse diferente, original e bem-vestido!
+                <br /><br />
+                Unindo referências do universo da moda e das redes sociais, construímos um vídeo menos corporativo e mais descontraído, mostrando o estilo único que cada colaborador da Porto tem 🕺
               </p>
             </div>
           </div>
-
-          <button
-            class="project-audio-toggle"
-            type="button"
-            aria-label="Ativar audio do video"
-            aria-pressed="false"
-          >
+          <button class="project-audio-toggle" type="button" aria-label="Ativar audio do video" aria-pressed="false">
             <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M4 10h4l5-4v12l-5-4H4z"></path>
               <path d="M17 9l4 6"></path>
@@ -378,30 +385,26 @@
               loop
               playsinline
               preload="metadata"
-              aria-label="Projeto Consciencia Negra"
+              aria-label="Projeto Consciência Negra"
             ></video>
             <div class="media-fallback">
               <code>/assets/portfolio/videos/02-novos/MK_OF_Consciencia_Negra_v01_LEG.mp4</code>
             </div>
           </div>
-
           <div class="project-overlay">
             <div class="project-copy">
-              <p class="project-index">Projeto 02</p>
-              <h2>Consciencia Negra</h2>
+              <p class="project-index">Projeto Porto</p>
+              <h2>Consciência Negra</h2>
               <p>
-                Espaco reservado para o texto descritivo do projeto: objetivos,
-                desafios criativos, estrategia e impacto da campanha.
+                Pertencimento, potencial e poder 🧑🏿‍🎨
+                <br /><br />
+                Por trás duma campanha incrível como essa estão diversos profissionais, tanto do ramo de RH e EVP, quanto de audiovisual. Cada um trazendo à mesa sua visão, talentos e sensibilidades.
+                <br /><br />
+                O nosso vídeo making of é relato dum projeto apaixonante que foi pensado para engrandecer e impressionar. Da ponta da caneta às cerdas do pincel, do vidro da lente à rodinha dos patins, cada detalhe vem da vontade de fazer diferente… e fazer bonito 🪄
               </p>
             </div>
           </div>
-
-          <button
-            class="project-audio-toggle"
-            type="button"
-            aria-label="Ativar audio do video"
-            aria-pressed="false"
-          >
+          <button class="project-audio-toggle" type="button" aria-label="Ativar audio do video" aria-pressed="false">
             <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M4 10h4l5-4v12l-5-4H4z"></path>
               <path d="M17 9l4 6"></path>
@@ -418,36 +421,32 @@
         <article class="project-screen reveal">
           <div class="project-media media-slot">
             <video
-              src="./assets/portfolio/videos/02-novos/montagem_festa_v04_Horizontal.mp4"
+              src="./assets/portfolio/videos/Bliss_Filmes_hhh_4K_v06.mp4"
               autoplay
               muted
               loop
               playsinline
               preload="metadata"
-              aria-label="Projeto Montagem Festa"
+              aria-label="Projeto HipHop"
             ></video>
             <div class="media-fallback">
-              <code>/assets/portfolio/videos/02-novos/montagem_festa_v04_Horizontal.mp4</code>
+              <code>/assets/portfolio/videos/Bliss_Filmes_hhh_4K_v06.mp4</code>
             </div>
           </div>
-
           <div class="project-overlay">
             <div class="project-copy">
-              <p class="project-index">Projeto 03</p>
-              <h2>Montagem Festa</h2>
+              <p class="project-index">Projeto Aventura</p>
+              <h2>HipHop</h2>
               <p>
-                Espaco reservado para o texto descritivo do projeto: objetivos,
-                desafios criativos, estrategia e impacto da campanha.
+                Ser ou não ser? 💀
+                <br /><br />
+                O @hiphophamlet é um clássico com originalidade — dinâmico, atual, e com um elenco bom de verdade. Receita perfeita pra um vídeo surreal; ainda bem que a Bliss Filmes é a tal.
+                <br /><br />
+                Jogo de câmera e luzes com gingado; edição feroz pra não te deixar parado. Teatro hip-hop é isso aí e muito mais. Curtiu, comentou, compartilhou? Fica na paz! 🎤
               </p>
             </div>
           </div>
-
-          <button
-            class="project-audio-toggle"
-            type="button"
-            aria-label="Ativar audio do video"
-            aria-pressed="false"
-          >
+          <button class="project-audio-toggle" type="button" aria-label="Ativar audio do video" aria-pressed="false">
             <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M4 10h4l5-4v12l-5-4H4z"></path>
               <path d="M17 9l4 6"></path>
@@ -462,84 +461,141 @@
         </article>
 
         <article class="project-screen reveal">
-          <div class="project-media media-slot">
-            <video
-              src="./assets/portfolio/videos/02-novos/saude_integral_v02%20%281%29.mp4"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="metadata"
-              aria-label="Projeto Saude Integral"
-            ></video>
+          <div class="project-media project-media--triple media-slot">
+            <div class="triple-video-cell">
+              <video
+                src="./assets/portfolio/videos/festa-porto/festa%201.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Projeto Festa Porto video 1"
+              ></video>
+              <button
+                class="project-audio-toggle project-audio-toggle-individual"
+                type="button"
+                aria-label="Ativar audio do video 1"
+                aria-pressed="false"
+              >
+                <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 10h4l5-4v12l-5-4H4z"></path>
+                  <path d="M17 9l4 6"></path>
+                  <path d="M21 9l-4 6"></path>
+                </svg>
+                <svg class="audio-icon audio-icon--on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 10h4l5-4v12l-5-4H4z"></path>
+                  <path d="M16 9.5c1 .7 1.6 1.7 1.6 2.5s-.6 1.8-1.6 2.5"></path>
+                  <path d="M18.8 7c1.6 1.2 2.6 3 2.6 5s-1 3.8-2.6 5"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="triple-video-cell">
+              <video
+                src="./assets/portfolio/videos/festa-porto/festa%202.mov"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Projeto Festa Porto video 2"
+              ></video>
+              <button
+                class="project-audio-toggle project-audio-toggle-individual"
+                type="button"
+                aria-label="Ativar audio do video 2"
+                aria-pressed="false"
+              >
+                <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 10h4l5-4v12l-5-4H4z"></path>
+                  <path d="M17 9l4 6"></path>
+                  <path d="M21 9l-4 6"></path>
+                </svg>
+                <svg class="audio-icon audio-icon--on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 10h4l5-4v12l-5-4H4z"></path>
+                  <path d="M16 9.5c1 .7 1.6 1.7 1.6 2.5s-.6 1.8-1.6 2.5"></path>
+                  <path d="M18.8 7c1.6 1.2 2.6 3 2.6 5s-1 3.8-2.6 5"></path>
+                </svg>
+              </button>
+            </div>
+            <div class="triple-video-cell">
+              <video
+                src="./assets/portfolio/videos/festa-porto/festa%203.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label="Projeto Festa Porto video 3"
+              ></video>
+              <button
+                class="project-audio-toggle project-audio-toggle-individual"
+                type="button"
+                aria-label="Ativar audio do video 3"
+                aria-pressed="false"
+              >
+                <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 10h4l5-4v12l-5-4H4z"></path>
+                  <path d="M17 9l4 6"></path>
+                  <path d="M21 9l-4 6"></path>
+                </svg>
+                <svg class="audio-icon audio-icon--on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 10h4l5-4v12l-5-4H4z"></path>
+                  <path d="M16 9.5c1 .7 1.6 1.7 1.6 2.5s-.6 1.8-1.6 2.5"></path>
+                  <path d="M18.8 7c1.6 1.2 2.6 3 2.6 5s-1 3.8-2.6 5"></path>
+                </svg>
+              </button>
+            </div>
             <div class="media-fallback">
-              <code>/assets/portfolio/videos/02-novos/saude_integral_v02 (1).mp4</code>
+              <code>/assets/portfolio/videos/festa-porto/festa 1.mp4</code>
+              <br />
+              <code>/assets/portfolio/videos/festa-porto/festa 2.mov</code>
+              <br />
+              <code>/assets/portfolio/videos/festa-porto/festa 3.mp4</code>
             </div>
           </div>
-
           <div class="project-overlay">
             <div class="project-copy">
-              <p class="project-index">Projeto 04</p>
-              <h2>Saude Integral</h2>
+              <p class="project-index">Projeto Porto</p>
+              <h2>Festa Porto 2025</h2>
               <p>
-                Espaco reservado para o texto descritivo do projeto: objetivos,
-                desafios criativos, estrategia e impacto da campanha.
+                Eu ouvi festa!? 🕺
+                <br /><br />
+                Aquela amiga que ainda não superou o rolê com a Veveta...
+                <br /><br />
+                ...ok, ok, vou parar de falar dela... mas então assiste só mais esse recap de tudo que rolou, pode ser?
+                <br /><br />
+                Fim de ano tô de volta 🏄
               </p>
             </div>
           </div>
-
-          <button
-            class="project-audio-toggle"
-            type="button"
-            aria-label="Ativar audio do video"
-            aria-pressed="false"
-          >
-            <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M4 10h4l5-4v12l-5-4H4z"></path>
-              <path d="M17 9l4 6"></path>
-              <path d="M21 9l-4 6"></path>
-            </svg>
-            <svg class="audio-icon audio-icon--on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M4 10h4l5-4v12l-5-4H4z"></path>
-              <path d="M16 9.5c1 .7 1.6 1.7 1.6 2.5s-.6 1.8-1.6 2.5"></path>
-              <path d="M18.8 7c1.6 1.2 2.6 3 2.6 5s-1 3.8-2.6 5"></path>
-            </svg>
-          </button>
         </article>
 
         <article class="project-screen reveal">
           <div class="project-media media-slot">
             <video
-              src="./assets/portfolio/videos/02-novos/time_medico_4K_v05_trilhaA.mp4"
+              src="./assets/portfolio/videos/Cillo_Manifesto_V02-2_LEG.mp4"
               autoplay
               muted
               loop
               playsinline
               preload="metadata"
-              aria-label="Projeto Time Medico"
+              aria-label="Projeto Cillo"
             ></video>
             <div class="media-fallback">
-              <code>/assets/portfolio/videos/02-novos/time_medico_4K_v05_trilhaA.mp4</code>
+              <code>/assets/portfolio/videos/Cillo_Manifesto_V02-2_LEG.mp4</code>
             </div>
           </div>
-
           <div class="project-overlay">
             <div class="project-copy">
-              <p class="project-index">Projeto 05</p>
-              <h2>Time Medico</h2>
+              <p class="project-index">Projeto Cillo</p>
+              <h2>Cillo</h2>
               <p>
-                Espaco reservado para o texto descritivo do projeto: objetivos,
-                desafios criativos, estrategia e impacto da campanha.
+                Espaço reservado para a descrição final do projeto Cillo.
               </p>
             </div>
           </div>
-
-          <button
-            class="project-audio-toggle"
-            type="button"
-            aria-label="Ativar audio do video"
-            aria-pressed="false"
-          >
+          <button class="project-audio-toggle" type="button" aria-label="Ativar audio do video" aria-pressed="false">
             <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M4 10h4l5-4v12l-5-4H4z"></path>
               <path d="M17 9l4 6"></path>
@@ -562,30 +618,22 @@
               loop
               playsinline
               preload="metadata"
-              aria-label="Projeto GPTW Botao"
+              aria-label="Projeto GPTW"
             ></video>
             <div class="media-fallback">
               <code>/assets/portfolio/videos/GPTW__botao_4K_LEG_v03.mp4</code>
             </div>
           </div>
-
           <div class="project-overlay">
             <div class="project-copy">
-              <p class="project-index">Projeto 06</p>
+              <p class="project-index">Projeto GPTW</p>
               <h2>GPTW</h2>
               <p>
-                Espaco reservado para o texto descritivo do projeto: objetivos,
-                desafios criativos, estrategia e impacto da campanha.
+                Espaço reservado para a descrição final do projeto GPTW.
               </p>
             </div>
           </div>
-
-          <button
-            class="project-audio-toggle"
-            type="button"
-            aria-label="Ativar audio do video"
-            aria-pressed="false"
-          >
+          <button class="project-audio-toggle" type="button" aria-label="Ativar audio do video" aria-pressed="false">
             <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M4 10h4l5-4v12l-5-4H4z"></path>
               <path d="M17 9l4 6"></path>
@@ -608,76 +656,22 @@
               loop
               playsinline
               preload="metadata"
-              aria-label="Projeto Manifesto em baixa"
+              aria-label="Projeto Manifesto Porto"
             ></video>
             <div class="media-fallback">
               <code>/assets/portfolio/videos/manifesto em baixa.mp4</code>
             </div>
           </div>
-
           <div class="project-overlay">
             <div class="project-copy">
-              <p class="project-index">Projeto 07</p>
-              <h2>Manifesto</h2>
+              <p class="project-index">Projeto Porto</p>
+              <h2>Manifesto Porto</h2>
               <p>
-                Espaco reservado para o texto descritivo do projeto: objetivos,
-                desafios criativos, estrategia e impacto da campanha.
+                Espaço reservado para a descrição final do projeto Manifesto Porto.
               </p>
             </div>
           </div>
-
-          <button
-            class="project-audio-toggle"
-            type="button"
-            aria-label="Ativar audio do video"
-            aria-pressed="false"
-          >
-            <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M4 10h4l5-4v12l-5-4H4z"></path>
-              <path d="M17 9l4 6"></path>
-              <path d="M21 9l-4 6"></path>
-            </svg>
-            <svg class="audio-icon audio-icon--on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M4 10h4l5-4v12l-5-4H4z"></path>
-              <path d="M16 9.5c1 .7 1.6 1.7 1.6 2.5s-.6 1.8-1.6 2.5"></path>
-              <path d="M18.8 7c1.6 1.2 2.6 3 2.6 5s-1 3.8-2.6 5"></path>
-            </svg>
-          </button>
-        </article>
-
-        <article class="project-screen reveal">
-          <div class="project-media media-slot">
-            <video
-              src="./assets/portfolio/videos/instituto_video_aniversario_4k_03.mp4"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="metadata"
-              aria-label="Projeto Instituto Video Aniversario"
-            ></video>
-            <div class="media-fallback">
-              <code>/assets/portfolio/videos/instituto_video_aniversario_4k_03.mp4</code>
-            </div>
-          </div>
-
-          <div class="project-overlay">
-            <div class="project-copy">
-              <p class="project-index">Projeto 08</p>
-              <h2>Instituto</h2>
-              <p>
-                Espaco reservado para o texto descritivo do projeto: objetivos,
-                desafios criativos, estrategia e impacto da campanha.
-              </p>
-            </div>
-          </div>
-
-          <button
-            class="project-audio-toggle"
-            type="button"
-            aria-label="Ativar audio do video"
-            aria-pressed="false"
-          >
+          <button class="project-audio-toggle" type="button" aria-label="Ativar audio do video" aria-pressed="false">
             <svg class="audio-icon audio-icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="M4 10h4l5-4v12l-5-4H4z"></path>
               <path d="M17 9l4 6"></path>

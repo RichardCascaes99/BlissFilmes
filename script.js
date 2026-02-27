@@ -83,55 +83,123 @@ if (projectVideos.length > 0) {
 const projectScreens = document.querySelectorAll(".project-screen");
 
 if (projectScreens.length > 0) {
-  const syncProjectAudioButtons = () => {
-    projectScreens.forEach((screen) => {
-      const video = screen.querySelector(".project-media video");
-      const toggle = screen.querySelector(".project-audio-toggle");
-      if (!(video instanceof HTMLVideoElement) || !(toggle instanceof HTMLButtonElement)) return;
+  const isVideoElement = (video) => video instanceof HTMLVideoElement;
 
-      const isAudioOn = !video.muted;
-      toggle.classList.toggle("is-on", isAudioOn);
-      toggle.setAttribute("aria-pressed", String(isAudioOn));
-      toggle.setAttribute(
-        "aria-label",
-        isAudioOn ? "Desativar audio do video" : "Ativar audio do video"
-      );
+  const setToggleState = (toggle, isOn, onLabel, offLabel) => {
+    if (!(toggle instanceof HTMLButtonElement)) return;
+
+    toggle.classList.toggle("is-on", isOn);
+    toggle.setAttribute("aria-pressed", String(isOn));
+    toggle.setAttribute("aria-label", isOn ? onLabel : offLabel);
+  };
+
+  const muteVideosOutsideScreen = (screen) => {
+    projectVideos.forEach((video) => {
+      if (!isVideoElement(video)) return;
+      if (!screen.contains(video)) {
+        video.muted = true;
+      }
     });
   };
 
   projectScreens.forEach((screen) => {
-    const video = screen.querySelector(".project-media video");
-    const toggle = screen.querySelector(".project-audio-toggle");
-    if (!(video instanceof HTMLVideoElement) || !(toggle instanceof HTMLButtonElement)) return;
+    const videos = Array.from(screen.querySelectorAll(".project-media video")).filter(
+      (video) => isVideoElement(video)
+    );
+    if (!videos.length) return;
 
-    toggle.addEventListener("click", () => {
-      const shouldEnableAudio = video.muted;
+    const groupToggle = screen.querySelector(".project-audio-toggle:not(.project-audio-toggle-individual)");
+    const individualToggles = Array.from(
+      screen.querySelectorAll(".project-audio-toggle-individual")
+    ).filter((toggle) => toggle instanceof HTMLButtonElement);
 
-      if (shouldEnableAudio) {
-        projectVideos.forEach((otherVideo) => {
-          if (!(otherVideo instanceof HTMLVideoElement)) return;
-          if (otherVideo !== video) {
-            otherVideo.muted = true;
-          }
-        });
+    const getVideoForIndividualToggle = (toggle, index) => {
+      const videoInCell = toggle.closest(".triple-video-cell")?.querySelector("video");
+      if (isVideoElement(videoInCell)) return videoInCell;
 
-        video.muted = false;
-        video.volume = 1;
-        const playPromise = video.play();
-        if (playPromise && typeof playPromise.catch === "function") {
-          playPromise.catch(() => {});
-        }
-      } else {
-        video.muted = true;
+      const indexedVideo = videos[index];
+      return isVideoElement(indexedVideo) ? indexedVideo : null;
+    };
+
+    const syncTogglesState = () => {
+      if (groupToggle instanceof HTMLButtonElement) {
+        const isAudioOn = videos.some((video) => !video.muted);
+        setToggleState(
+          groupToggle,
+          isAudioOn,
+          "Desativar audio do video",
+          "Ativar audio do video"
+        );
       }
 
-      syncProjectAudioButtons();
+      individualToggles.forEach((toggle, index) => {
+        const targetVideo = getVideoForIndividualToggle(toggle, index);
+        if (!targetVideo) return;
+
+        const videoNumber = index + 1;
+        setToggleState(
+          toggle,
+          !targetVideo.muted,
+          `Desativar audio do video ${videoNumber}`,
+          `Ativar audio do video ${videoNumber}`
+        );
+      });
+    };
+
+    if (groupToggle instanceof HTMLButtonElement) {
+      groupToggle.addEventListener("click", () => {
+        const shouldEnableAudio = videos.every((video) => video.muted);
+
+        if (shouldEnableAudio) {
+          muteVideosOutsideScreen(screen);
+
+          videos.forEach((video) => {
+            video.muted = false;
+            video.volume = 1;
+            const playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise.catch(() => {});
+            }
+          });
+        } else {
+          videos.forEach((video) => {
+            video.muted = true;
+          });
+        }
+
+        syncTogglesState();
+      });
+    }
+
+    individualToggles.forEach((toggle, index) => {
+      const targetVideo = getVideoForIndividualToggle(toggle, index);
+      if (!targetVideo) return;
+
+      toggle.addEventListener("click", () => {
+        const shouldEnableAudio = targetVideo.muted;
+
+        if (shouldEnableAudio) {
+          muteVideosOutsideScreen(screen);
+          targetVideo.muted = false;
+          targetVideo.volume = 1;
+          const playPromise = targetVideo.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {});
+          }
+        } else {
+          targetVideo.muted = true;
+        }
+
+        syncTogglesState();
+      });
     });
 
-    video.addEventListener("volumechange", syncProjectAudioButtons);
-  });
+    videos.forEach((video) => {
+      video.addEventListener("volumechange", syncTogglesState);
+    });
 
-  syncProjectAudioButtons();
+    syncTogglesState();
+  });
 }
 
 const marqueeEmpty = document.querySelector(".marquee-empty");

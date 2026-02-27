@@ -192,10 +192,17 @@ main {
   justify-content: space-between;
 }
 
-.hero-insta {
+.hero-socials {
   position: absolute;
   top: clamp(0.8rem, 2vw, 1.4rem);
   right: clamp(0.8rem, 2vw, 1.4rem);
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  z-index: 12;
+}
+
+.hero-insta {
   width: 44px;
   height: 44px;
   display: grid;
@@ -371,7 +378,7 @@ main {
 
 .team-kicker {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.92rem;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -418,6 +425,26 @@ main {
   height: 100%;
   display: block;
   object-fit: cover;
+}
+
+.team-photo--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+}
+
+.team-photo-placeholder-text {
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .team-insta {
@@ -501,6 +528,20 @@ main {
   background: #ffffff;
 }
 
+.team-card--richard .team-photo img {
+  transform: translateY(-3%) scale(2);
+  transform-origin: 50% 14%;
+}
+
+.team-card--aldo .team-photo img {
+  object-position: 50% 42%;
+}
+
+.team-card--ian .team-photo img {
+  transform: translateY(3%) scale(2);
+  transform-origin: 50% 10%;
+}
+
 .team-card:hover,
 .team-card:focus-within {
   flex: 2.1 1 0;
@@ -539,6 +580,31 @@ main {
   height: 100%;
   display: block;
   object-fit: cover;
+}
+
+.project-media--triple {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  overflow: hidden;
+}
+
+.triple-video-cell {
+  position: relative;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.project-media--triple video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-audio-toggle-individual {
+  left: clamp(0.7rem, 1.1vw, 1.15rem);
+  top: clamp(0.7rem, 1.1vw, 1.15rem);
+  z-index: 8;
 }
 
 .project-overlay {
@@ -794,9 +860,13 @@ code {
     width: 100%;
   }
 
-  .hero-insta {
+  .hero-socials {
     top: 0.55rem;
     right: 0.65rem;
+    gap: 0.4rem;
+  }
+
+  .hero-insta {
     width: 40px;
     height: 40px;
   }
