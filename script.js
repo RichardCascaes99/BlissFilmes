@@ -265,14 +265,73 @@ if (marquee && marqueeTrack && marqueeSeedGroup) {
   scheduleRebuild();
 }
 
+const teamCards = Array.from(document.querySelectorAll(".team-card"));
+
+if (teamCards.length > 0) {
+  const teamStrip = document.querySelector(".team-strip");
+  const hasFineHoverPointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  const activateTeamCard = (activeCard) => {
+    teamCards.forEach((card) => {
+      card.classList.toggle("is-active", card === activeCard);
+    });
+  };
+
+  teamCards.forEach((card) => {
+    card.addEventListener("focusin", () => {
+      activateTeamCard(card);
+    });
+
+    card.addEventListener("click", (event) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest(".team-insta")) {
+        return;
+      }
+      if (hasFineHoverPointer) {
+        return;
+      }
+      activateTeamCard(card);
+    });
+
+    card.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      activateTeamCard(card);
+    });
+  });
+
+  if (teamStrip && hasFineHoverPointer) {
+    teamStrip.addEventListener("mouseleave", () => {
+      teamCards.forEach((card) => card.classList.remove("is-active"));
+    });
+  }
+}
+
 const snapSectionSelector = "#home, #colaboradores, #portfolio .project-screen";
 const snapSections = Array.from(document.querySelectorAll(snapSectionSelector));
 
 if (snapSections.length > 1) {
   let snapLocked = false;
   let touchStartY = null;
+  let touchStartX = null;
+  let touchStrip = null;
   const touchThreshold = 2;
   const lockDuration = prefersReducedMotion ? 120 : 900;
+  const stripSelector = ".team-strip";
+
+  const getScrollableTeamStrip = (target) => {
+    if (!(target instanceof Element)) return null;
+    const strip = target.closest(stripSelector);
+    if (!(strip instanceof HTMLElement)) return null;
+    return strip.scrollWidth > strip.clientWidth + 1 ? strip : null;
+  };
+
+  const isInteractiveInput = (target) =>
+    target instanceof Element &&
+    Boolean(target.closest("input, textarea, select, [contenteditable='true']"));
+
+  const shouldSkipSnap = (target) =>
+    isInteractiveInput(target) || Boolean(getScrollableTeamStrip(target));
 
   const getVisibleSections = () =>
     snapSections.filter((section) => section.offsetHeight > 0);
@@ -335,6 +394,20 @@ if (snapSections.length > 1) {
   window.addEventListener(
     "wheel",
     (event) => {
+      const activeStrip = getScrollableTeamStrip(event.target);
+      if (activeStrip) {
+        const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+        if (delta !== 0) {
+          event.preventDefault();
+          activeStrip.scrollBy({ left: delta, behavior: "auto" });
+        }
+        return;
+      }
+
+      if (shouldSkipSnap(event.target)) {
+        return;
+      }
+
       if (snapLocked) {
         event.preventDefault();
         return;
@@ -350,12 +423,33 @@ if (snapSections.length > 1) {
 
   window.addEventListener("touchstart", (event) => {
     touchStartY = event.touches[0]?.clientY ?? null;
+    touchStartX = event.touches[0]?.clientX ?? null;
+    touchStrip = getScrollableTeamStrip(event.target);
   });
 
   window.addEventListener(
     "touchmove",
     (event) => {
+      if (touchStrip && touchStartX !== null && touchStartY !== null) {
+        const currentX = event.touches[0]?.clientX ?? touchStartX;
+        const currentY = event.touches[0]?.clientY ?? touchStartY;
+        const deltaX = touchStartX - currentX;
+        const deltaY = touchStartY - currentY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > touchThreshold) {
+          event.preventDefault();
+          touchStrip.scrollBy({ left: deltaX, behavior: "auto" });
+          touchStartX = currentX;
+          touchStartY = currentY;
+        }
+        return;
+      }
+
       if (touchStartY === null) return;
+
+      if (shouldSkipSnap(event.target)) {
+        return;
+      }
 
       if (snapLocked) {
         event.preventDefault();
@@ -378,9 +472,19 @@ if (snapSections.length > 1) {
 
   window.addEventListener("touchend", () => {
     touchStartY = null;
+    touchStartX = null;
+    touchStrip = null;
+  });
+
+  window.addEventListener("touchcancel", () => {
+    touchStartY = null;
+    touchStartX = null;
+    touchStrip = null;
   });
 
   window.addEventListener("keydown", (event) => {
+    if (shouldSkipSnap(document.activeElement)) return;
+
     const isDownKey =
       event.key === "ArrowDown" ||
       event.key === "PageDown" ||
