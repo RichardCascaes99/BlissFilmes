@@ -397,9 +397,12 @@ main {
   display: flex;
   gap: clamp(0.45rem, 0.9vw, 0.9rem);
   min-height: clamp(360px, 38vw, 500px);
+  contain: layout paint;
 }
 
 .team-card {
+  position: relative;
+  isolation: isolate;
   flex: 1 1 0;
   min-width: 86px;
   display: flex;
@@ -409,7 +412,7 @@ main {
   overflow: hidden;
   background: #0d0d0d;
   color: #f5f5f5;
-  transition: flex 420ms var(--timing);
+  transition: flex-grow 340ms var(--timing), border-color 220ms var(--timing);
 }
 
 .team-photo {
@@ -418,6 +421,7 @@ main {
   min-width: 110px;
   margin: 0;
   background: #141414;
+  contain: paint;
 }
 
 .team-photo img {
@@ -425,6 +429,8 @@ main {
   height: 100%;
   display: block;
   object-fit: cover;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .team-photo--placeholder {
@@ -492,16 +498,23 @@ main {
 }
 
 .team-copy {
-  width: 0;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: clamp(170px, 17vw, 250px);
   opacity: 0;
-  overflow: hidden;
-  padding: 1.3rem 0;
+  overflow: auto;
+  padding: 1.3rem 1.15rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 0.75rem;
-  background: #0b0b0b;
-  transition: width 420ms var(--timing), opacity 240ms ease, padding 420ms var(--timing);
+  background: linear-gradient(90deg, rgba(11, 11, 11, 0.78), rgba(11, 11, 11, 0.96) 22%);
+  transform: translateX(20px);
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 220ms ease, transform 320ms var(--timing);
 }
 
 .team-copy p {
@@ -544,14 +557,15 @@ main {
 
 .team-card:hover,
 .team-card:focus-within {
-  flex: 2.1 1 0;
+  flex-grow: 2.1;
 }
 
 .team-card:hover .team-copy,
 .team-card:focus-within .team-copy {
-  width: clamp(170px, 17vw, 250px);
   opacity: 1;
-  padding: 1.3rem 1.15rem;
+  transform: translateX(0);
+  pointer-events: auto;
+  visibility: visible;
 }
 
 .projects {
@@ -819,15 +833,21 @@ code {
   }
 
   .team-copy {
+    position: static;
     width: clamp(150px, 25vw, 220px);
     opacity: 1;
     padding: 1.1rem 0.95rem;
+    transform: none;
+    pointer-events: auto;
+    visibility: visible;
+    background: #0b0b0b;
   }
 
   .team-card:hover .team-copy,
   .team-card:focus-within .team-copy {
     width: clamp(150px, 25vw, 220px);
     padding: 1.1rem 0.95rem;
+    transform: none;
   }
 
   .project-overlay {
@@ -923,8 +943,13 @@ code {
   .team-copy,
   .team-card:hover .team-copy,
   .team-card:focus-within .team-copy {
+    position: static;
     width: 56%;
     padding: 1rem 0.85rem;
+    transform: none;
+    pointer-events: auto;
+    visibility: visible;
+    background: #0b0b0b;
   }
 
   .project-overlay {
