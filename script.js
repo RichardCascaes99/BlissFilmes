@@ -84,6 +84,11 @@ const projectScreens = document.querySelectorAll(".project-screen");
 
 if (projectScreens.length > 0) {
   const isVideoElement = (video) => video instanceof HTMLVideoElement;
+  const screenStates = [];
+  const visibilityMap = new Map();
+  let activeScreen = projectScreens[0] ?? null;
+  let globalAudioEnabled = false;
+  let rafId = null;
 
   const setToggleState = (toggle, isOn, onLabel, offLabel) => {
     if (!(toggle instanceof HTMLButtonElement)) return;
@@ -93,12 +98,113 @@ if (projectScreens.length > 0) {
     toggle.setAttribute("aria-label", isOn ? onLabel : offLabel);
   };
 
-  const muteVideosOutsideScreen = (screen) => {
-    projectVideos.forEach((video) => {
-      if (!isVideoElement(video)) return;
-      if (!screen.contains(video)) {
-        video.muted = true;
+  const findActiveScreenByViewport = () => {
+    if (!projectScreens.length) return null;
+
+    const viewportCenter = window.innerHeight * 0.5;
+    let bestScreen = projectScreens[0];
+    let bestDistance = Number.POSITIVE_INFINITY;
+
+    projectScreens.forEach((screen) => {
+      const rect = screen.getBoundingClientRect();
+      const screenCenter = rect.top + rect.height * 0.5;
+      const distance = Math.abs(screenCenter - viewportCenter);
+
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestScreen = screen;
       }
+    });
+
+    return bestScreen;
+  };
+
+  const findMostVisibleScreen = () => {
+    let bestScreen = null;
+    let bestRatio = -1;
+
+    visibilityMap.forEach((ratio, screen) => {
+      if (ratio > bestRatio) {
+        bestRatio = ratio;
+        bestScreen = screen;
+      }
+    });
+
+    if (bestScreen && bestRatio > 0.15) {
+      return bestScreen;
+    }
+
+    return findActiveScreenByViewport();
+  };
+
+  const syncAudioState = () => {
+    screenStates.forEach((state) => {
+      const { screen, videos, groupToggle, individualToggles } = state;
+      const isActive = screen === activeScreen;
+      const hasIndividual = individualToggles.length > 0;
+
+      if (!globalAudioEnabled || !isActive) {
+        videos.forEach((video) => {
+          video.muted = true;
+        });
+      } else if (hasIndividual) {
+        const selectedIndex = Math.max(0, Math.min(state.activeTripleIndex, videos.length - 1));
+        state.activeTripleIndex = selectedIndex;
+
+        videos.forEach((video, index) => {
+          const shouldPlayAudio = index === selectedIndex;
+          video.muted = !shouldPlayAudio;
+
+          if (shouldPlayAudio) {
+            video.volume = 1;
+            const playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise.catch(() => {});
+            }
+          }
+        });
+      } else {
+        videos.forEach((video, index) => {
+          const shouldPlayAudio = index === 0;
+          video.muted = !shouldPlayAudio;
+
+          if (shouldPlayAudio) {
+            video.volume = 1;
+            const playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise.catch(() => {});
+            }
+          }
+        });
+      }
+
+      if (groupToggle instanceof HTMLButtonElement) {
+        setToggleState(groupToggle, globalAudioEnabled, "Desativar áudio", "Ativar áudio");
+      }
+
+      individualToggles.forEach((toggle, index) => {
+        const isOn = globalAudioEnabled && isActive && index === state.activeTripleIndex;
+        const videoNumber = index + 1;
+        setToggleState(
+          toggle,
+          isOn,
+          `Desativar áudio do vídeo ${videoNumber}`,
+          `Ativar áudio do vídeo ${videoNumber}`
+        );
+      });
+    });
+  };
+
+  const syncActiveScreenAndAudio = () => {
+    activeScreen = findMostVisibleScreen();
+    syncAudioState();
+  };
+
+  const scheduleActiveSync = () => {
+    if (rafId !== null) return;
+    rafId = requestAnimationFrame(() => {
+      rafId = null;
+      syncActiveScreenAndAudio();
     });
   };
 
@@ -113,93 +219,69 @@ if (projectScreens.length > 0) {
       screen.querySelectorAll(".project-audio-toggle-individual")
     ).filter((toggle) => toggle instanceof HTMLButtonElement);
 
-    const getVideoForIndividualToggle = (toggle, index) => {
+    const getVideoForIndividualToggle = (toggle, index, sourceVideos = videos) => {
       const videoInCell = toggle.closest(".triple-video-cell")?.querySelector("video");
       if (isVideoElement(videoInCell)) return videoInCell;
 
-      const indexedVideo = videos[index];
+      const indexedVideo = sourceVideos[index];
       return isVideoElement(indexedVideo) ? indexedVideo : null;
     };
 
-    const syncTogglesState = () => {
-      if (groupToggle instanceof HTMLButtonElement) {
-        const isAudioOn = videos.some((video) => !video.muted);
-        setToggleState(
-          groupToggle,
-          isAudioOn,
-          "Desativar audio do video",
-          "Ativar audio do video"
-        );
-      }
+    const orderedVideos =
+      individualToggles.length > 0
+        ? individualToggles
+            .map((toggle, index) => getVideoForIndividualToggle(toggle, index))
+            .filter((video) => isVideoElement(video))
+        : videos;
 
-      individualToggles.forEach((toggle, index) => {
-        const targetVideo = getVideoForIndividualToggle(toggle, index);
-        if (!targetVideo) return;
-
-        const videoNumber = index + 1;
-        setToggleState(
-          toggle,
-          !targetVideo.muted,
-          `Desativar audio do video ${videoNumber}`,
-          `Ativar audio do video ${videoNumber}`
-        );
-      });
+    const state = {
+      screen,
+      videos: orderedVideos.length > 0 ? orderedVideos : videos,
+      groupToggle,
+      individualToggles,
+      activeTripleIndex: individualToggles.length > 0 ? 0 : -1,
     };
 
     if (groupToggle instanceof HTMLButtonElement) {
       groupToggle.addEventListener("click", () => {
-        const shouldEnableAudio = videos.every((video) => video.muted);
-
-        if (shouldEnableAudio) {
-          muteVideosOutsideScreen(screen);
-
-          videos.forEach((video) => {
-            video.muted = false;
-            video.volume = 1;
-            const playPromise = video.play();
-            if (playPromise && typeof playPromise.catch === "function") {
-              playPromise.catch(() => {});
-            }
-          });
-        } else {
-          videos.forEach((video) => {
-            video.muted = true;
-          });
-        }
-
-        syncTogglesState();
+        globalAudioEnabled = !globalAudioEnabled;
+        activeScreen = screen;
+        syncAudioState();
       });
     }
 
     individualToggles.forEach((toggle, index) => {
-      const targetVideo = getVideoForIndividualToggle(toggle, index);
+      const targetVideo = getVideoForIndividualToggle(toggle, index, state.videos);
       if (!targetVideo) return;
 
       toggle.addEventListener("click", () => {
-        const shouldEnableAudio = targetVideo.muted;
-
-        if (shouldEnableAudio) {
-          muteVideosOutsideScreen(screen);
-          targetVideo.muted = false;
-          targetVideo.volume = 1;
-          const playPromise = targetVideo.play();
-          if (playPromise && typeof playPromise.catch === "function") {
-            playPromise.catch(() => {});
-          }
-        } else {
-          targetVideo.muted = true;
-        }
-
-        syncTogglesState();
+        globalAudioEnabled = true;
+        activeScreen = screen;
+        state.activeTripleIndex = index;
+        syncAudioState();
       });
     });
 
-    videos.forEach((video) => {
-      video.addEventListener("volumechange", syncTogglesState);
-    });
-
-    syncTogglesState();
+    screenStates.push(state);
   });
+
+  if ("IntersectionObserver" in window) {
+    const screenObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          visibilityMap.set(entry.target, entry.intersectionRatio);
+        });
+        scheduleActiveSync();
+      },
+      { threshold: [0, 0.15, 0.35, 0.55, 0.75, 1] }
+    );
+
+    projectScreens.forEach((screen) => screenObserver.observe(screen));
+  }
+
+  window.addEventListener("scroll", scheduleActiveSync, { passive: true });
+  window.addEventListener("resize", scheduleActiveSync);
+  scheduleActiveSync();
 }
 
 const marqueeEmpty = document.querySelector(".marquee-empty");
