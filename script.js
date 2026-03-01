@@ -23,6 +23,7 @@ if ("IntersectionObserver" in window) {
 
 const mediaSlots = document.querySelectorAll(".media-slot");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isMobileViewport = window.matchMedia("(max-width: 740px)").matches;
 
 const teamStrips = document.querySelectorAll(".team-strip");
 
@@ -402,7 +403,8 @@ if (snapSections.length > 1) {
   let touchStartX = null;
   let touchStartY = null;
   let touchStartedInHorizontalZone = false;
-  const touchThreshold = 2;
+  const touchThreshold = isMobileViewport ? 38 : 8;
+  const touchVerticalBias = isMobileViewport ? 1.45 : 1.2;
   const lockDuration = prefersReducedMotion ? 120 : 900;
 
   const getVisibleSections = () =>
@@ -510,7 +512,9 @@ if (snapSections.length > 1) {
       const currentX = event.touches[0]?.clientX ?? touchStartX;
       const currentY = event.touches[0]?.clientY ?? touchStartY;
       const deltaY = touchStartY - currentY;
+      const deltaX = touchStartX - currentX;
       if (Math.abs(deltaY) < touchThreshold) return;
+      if (Math.abs(deltaY) < Math.abs(deltaX) * touchVerticalBias) return;
 
       const direction = deltaY > 0 ? "down" : "up";
       const snapped = handleDirectionalSnap(direction, event);
