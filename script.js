@@ -25,52 +25,62 @@ const mediaSlots = document.querySelectorAll(".media-slot");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isMobileViewport = window.matchMedia("(max-width: 740px)").matches;
 
-const teamStrips = document.querySelectorAll(".team-strip");
+const teamCards = Array.from(document.querySelectorAll(".team-strip .team-card"));
+const teamMobileQuery = window.matchMedia("(max-width: 740px)");
+let teamLoopInterval = null;
 
-teamStrips.forEach((strip) => {
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let startScrollLeft = 0;
-  let dragging = false;
+const setActiveMobileTeamCard = (activeIndex) => {
+  teamCards.forEach((card, index) => {
+    card.classList.toggle("is-mobile-active", index === activeIndex);
+  });
+};
 
-  strip.addEventListener(
-    "touchstart",
-    (event) => {
-      if (event.touches.length !== 1) return;
-      const touch = event.touches[0];
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-      startScrollLeft = strip.scrollLeft;
-      dragging = true;
-    },
-    { passive: true }
-  );
+const stopMobileTeamLoop = () => {
+  if (teamLoopInterval !== null) {
+    window.clearInterval(teamLoopInterval);
+    teamLoopInterval = null;
+  }
+  teamCards.forEach((card) => card.classList.remove("is-mobile-active"));
+};
 
-  strip.addEventListener(
-    "touchmove",
-    (event) => {
-      if (!dragging || event.touches.length !== 1) return;
+const startMobileTeamLoop = () => {
+  if (!teamCards.length) return;
 
-      const touch = event.touches[0];
-      const deltaX = touch.clientX - touchStartX;
-      const deltaY = touch.clientY - touchStartY;
+  stopMobileTeamLoop();
+  let activeIndex = 0;
+  setActiveMobileTeamCard(activeIndex);
 
-      // Prioriza o arraste horizontal dentro do Time Bliss.
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        event.preventDefault();
-        strip.scrollLeft = startScrollLeft - deltaX;
-      }
-    },
-    { passive: false }
-  );
+  if (prefersReducedMotion) return;
 
-  const endDrag = () => {
-    dragging = false;
-  };
+  teamLoopInterval = window.setInterval(() => {
+    activeIndex = (activeIndex + 1) % teamCards.length;
+    setActiveMobileTeamCard(activeIndex);
+  }, 3400);
+};
 
-  strip.addEventListener("touchend", endDrag);
-  strip.addEventListener("touchcancel", endDrag);
+const syncTeamMobileMode = () => {
+  if (teamMobileQuery.matches) {
+    startMobileTeamLoop();
+  } else {
+    stopMobileTeamLoop();
+  }
+};
+
+if (typeof teamMobileQuery.addEventListener === "function") {
+  teamMobileQuery.addEventListener("change", syncTeamMobileMode);
+} else if (typeof teamMobileQuery.addListener === "function") {
+  teamMobileQuery.addListener(syncTeamMobileMode);
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    stopMobileTeamLoop();
+    return;
+  }
+  syncTeamMobileMode();
 });
+
+syncTeamMobileMode();
 
 mediaSlots.forEach((slot) => {
   const image = slot.querySelector("img");
@@ -398,13 +408,10 @@ if (marquee && marqueeTrack && marqueeSeedGroup) {
 const snapSectionSelector = "#home, #colaboradores, #portfolio .project-screen";
 const snapSections = Array.from(document.querySelectorAll(snapSectionSelector));
 
-if (snapSections.length > 1) {
+if (snapSections.length > 1 && !isMobileViewport) {
   let snapLocked = false;
-  let touchStartX = null;
   let touchStartY = null;
-  let touchStartedInHorizontalZone = false;
-  const touchThreshold = isMobileViewport ? 38 : 8;
-  const touchVerticalBias = isMobileViewport ? 1.45 : 1.2;
+  const touchThreshold = 8;
   const lockDuration = prefersReducedMotion ? 120 : 900;
 
   const getVisibleSections = () =>
@@ -482,56 +489,35 @@ if (snapSections.length > 1) {
   );
 
   window.addEventListener("touchstart", (event) => {
-    touchStartX = event.touches[0]?.clientX ?? null;
     touchStartY = event.touches[0]?.clientY ?? null;
-    const target = event.target;
-    const targetElement = target instanceof Element ? target : null;
-    const horizontalZone = targetElement?.closest(".team-strip") ?? null;
-    touchStartedInHorizontalZone =
-      horizontalZone instanceof HTMLElement &&
-      horizontalZone.scrollWidth > horizontalZone.clientWidth;
   });
 
   window.addEventListener(
     "touchmove",
     (event) => {
-      if (touchStartY === null || touchStartX === null) return;
+      if (touchStartY === null) return;
 
       if (snapLocked) {
-        if (touchStartedInHorizontalZone) {
-          return;
-        }
         event.preventDefault();
         return;
       }
 
-      if (touchStartedInHorizontalZone) {
-        return;
-      }
-
-      const currentX = event.touches[0]?.clientX ?? touchStartX;
       const currentY = event.touches[0]?.clientY ?? touchStartY;
       const deltaY = touchStartY - currentY;
-      const deltaX = touchStartX - currentX;
       if (Math.abs(deltaY) < touchThreshold) return;
-      if (Math.abs(deltaY) < Math.abs(deltaX) * touchVerticalBias) return;
 
       const direction = deltaY > 0 ? "down" : "up";
       const snapped = handleDirectionalSnap(direction, event);
 
       if (snapped) {
-        touchStartX = null;
         touchStartY = null;
-        touchStartedInHorizontalZone = false;
       }
     },
     { passive: false }
   );
 
   window.addEventListener("touchend", () => {
-    touchStartX = null;
     touchStartY = null;
-    touchStartedInHorizontalZone = false;
   });
 
   window.addEventListener("keydown", (event) => {

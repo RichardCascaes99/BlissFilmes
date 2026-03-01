@@ -578,6 +578,10 @@ main {
   transform-origin: 50% 10%;
 }
 
+.team-card--novo .team-photo img {
+  object-position: 50% 50%;
+}
+
 .team-card:hover,
 .team-card:focus-within {
   flex-grow: 2.15;
@@ -965,29 +969,45 @@ code {
   }
 
   .team-strip {
-    gap: 0.55rem;
-    overflow-x: auto;
+    gap: 0;
+    position: relative;
+    min-height: clamp(430px, 76svh, 760px);
+    overflow: hidden;
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x pinch-zoom;
-    overscroll-behavior-x: contain;
-    overscroll-behavior-y: contain;
+    touch-action: pan-y pinch-zoom;
+    overscroll-behavior: contain;
   }
 
   .team-card {
-    flex: 0 0 86vw;
-    min-width: 86vw;
-    min-height: 330px;
+    position: absolute;
+    inset: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 100%;
+    width: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(24px);
+    transition: opacity 450ms ease, transform 500ms var(--timing);
   }
 
   .team-card:hover,
   .team-card:focus-within {
-    flex: 0 0 86vw;
+    flex: 1 1 auto;
     border-color: #121212;
   }
 
+  .team-card.is-mobile-active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    z-index: 2;
+  }
+
   .team-photo {
-    min-width: 44%;
+    min-width: 100%;
+    width: 100%;
   }
 
   .team-insta {
@@ -1000,13 +1020,26 @@ code {
   .team-copy,
   .team-card:hover .team-copy,
   .team-card:focus-within .team-copy {
-    position: static;
-    width: 56%;
-    padding: 1rem 0.85rem;
-    transform: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 33.333%;
+    min-height: 118px;
+    width: auto;
+    padding: 0.85rem 0.8rem;
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+    visibility: hidden;
+    background: linear-gradient(180deg, rgba(5, 5, 5, 0.15) 0%, rgba(5, 5, 5, 0.85) 35%, rgba(5, 5, 5, 0.96) 100%);
+  }
+
+  .team-card.is-mobile-active .team-copy {
+    opacity: 1;
+    transform: translateY(0);
     pointer-events: auto;
     visibility: visible;
-    background: #0b0b0b;
   }
 
   .project-overlay {
