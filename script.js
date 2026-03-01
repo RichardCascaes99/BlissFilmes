@@ -24,6 +24,53 @@ if ("IntersectionObserver" in window) {
 const mediaSlots = document.querySelectorAll(".media-slot");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+const teamStrips = document.querySelectorAll(".team-strip");
+
+teamStrips.forEach((strip) => {
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let startScrollLeft = 0;
+  let dragging = false;
+
+  strip.addEventListener(
+    "touchstart",
+    (event) => {
+      if (event.touches.length !== 1) return;
+      const touch = event.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      startScrollLeft = strip.scrollLeft;
+      dragging = true;
+    },
+    { passive: true }
+  );
+
+  strip.addEventListener(
+    "touchmove",
+    (event) => {
+      if (!dragging || event.touches.length !== 1) return;
+
+      const touch = event.touches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+
+      // Prioriza o arraste horizontal dentro do Time Bliss.
+      if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        event.preventDefault();
+        strip.scrollLeft = startScrollLeft - deltaX;
+      }
+    },
+    { passive: false }
+  );
+
+  const endDrag = () => {
+    dragging = false;
+  };
+
+  strip.addEventListener("touchend", endDrag);
+  strip.addEventListener("touchcancel", endDrag);
+});
+
 mediaSlots.forEach((slot) => {
   const image = slot.querySelector("img");
   const video = slot.querySelector("video");
@@ -352,7 +399,9 @@ const snapSections = Array.from(document.querySelectorAll(snapSectionSelector));
 
 if (snapSections.length > 1) {
   let snapLocked = false;
+  let touchStartX = null;
   let touchStartY = null;
+  let touchStartedInHorizontalZone = false;
   const touchThreshold = 2;
   const lockDuration = prefersReducedMotion ? 120 : 900;
 
@@ -431,35 +480,54 @@ if (snapSections.length > 1) {
   );
 
   window.addEventListener("touchstart", (event) => {
+    touchStartX = event.touches[0]?.clientX ?? null;
     touchStartY = event.touches[0]?.clientY ?? null;
+    const target = event.target;
+    const targetElement = target instanceof Element ? target : null;
+    const horizontalZone = targetElement?.closest(".team-strip") ?? null;
+    touchStartedInHorizontalZone =
+      horizontalZone instanceof HTMLElement &&
+      horizontalZone.scrollWidth > horizontalZone.clientWidth;
   });
 
   window.addEventListener(
     "touchmove",
     (event) => {
-      if (touchStartY === null) return;
+      if (touchStartY === null || touchStartX === null) return;
 
       if (snapLocked) {
+        if (touchStartedInHorizontalZone) {
+          return;
+        }
         event.preventDefault();
         return;
       }
 
-      const currentY = event.touches[0]?.clientY ?? touchStartY;
-      const delta = touchStartY - currentY;
-      if (Math.abs(delta) < touchThreshold) return;
+      if (touchStartedInHorizontalZone) {
+        return;
+      }
 
-      const direction = delta > 0 ? "down" : "up";
+      const currentX = event.touches[0]?.clientX ?? touchStartX;
+      const currentY = event.touches[0]?.clientY ?? touchStartY;
+      const deltaY = touchStartY - currentY;
+      if (Math.abs(deltaY) < touchThreshold) return;
+
+      const direction = deltaY > 0 ? "down" : "up";
       const snapped = handleDirectionalSnap(direction, event);
 
       if (snapped) {
+        touchStartX = null;
         touchStartY = null;
+        touchStartedInHorizontalZone = false;
       }
     },
     { passive: false }
   );
 
   window.addEventListener("touchend", () => {
+    touchStartX = null;
     touchStartY = null;
+    touchStartedInHorizontalZone = false;
   });
 
   window.addEventListener("keydown", (event) => {

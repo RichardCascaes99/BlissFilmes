@@ -842,9 +842,14 @@ code {
 @media (max-width: 1000px) {
   .team-strip {
     overflow-x: auto;
+    overflow-y: hidden;
     padding-bottom: 0.35rem;
     min-height: 72vh;
     scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pinch-zoom;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: contain;
   }
 
   .team-card {
@@ -961,6 +966,12 @@ code {
 
   .team-strip {
     gap: 0.55rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pinch-zoom;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: contain;
   }
 
   .team-card {
