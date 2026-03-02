@@ -414,12 +414,11 @@ main {
   min-width: 86px;
   display: flex;
   align-items: stretch;
-  border: 1px solid #121212;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: #0d0d0d;
   color: #f5f5f5;
-  transition: flex-grow 320ms var(--timing), border-color 220ms var(--timing), transform var(--timing);
+  transition: flex-grow 320ms var(--timing), transform var(--timing);
 }
 
 .team-photo {
@@ -518,7 +517,7 @@ main {
   flex-direction: column;
   justify-content: flex-end;
   gap: 0.3rem;
-  background: linear-gradient(180deg, rgba(5, 5, 5, 0.15) 0%, rgba(5, 5, 5, 0.85) 35%, rgba(5, 5, 5, 0.96) 100%);
+  background: linear-gradient(180deg, rgba(5, 5, 5, 0) 0%, rgba(5, 5, 5, 0.2) 34%, rgba(5, 5, 5, 0.68) 72%, rgba(5, 5, 5, 0.9) 100%);
   transform: translateY(100%);
   pointer-events: none;
   visibility: hidden;
@@ -556,7 +555,6 @@ main {
 }
 
 .team-card--richard {
-  border-color: rgba(17, 17, 17, 0.14);
   background: #ffffff;
 }
 
@@ -578,14 +576,13 @@ main {
   transform-origin: 50% 10%;
 }
 
-.team-card--novo .team-photo img {
+.team-card--edgard .team-photo img {
   object-position: 50% 50%;
 }
 
 .team-card:hover,
 .team-card:focus-within {
   flex-grow: 2.15;
-  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .team-card:hover .team-copy,
@@ -864,7 +861,6 @@ code {
   .team-card:hover,
   .team-card:focus-within {
     flex: 0 0 min(70vw, 360px);
-    border-color: #121212;
   }
 
   .team-copy {
@@ -969,45 +965,47 @@ code {
   }
 
   .team-strip {
-    gap: 0;
-    position: relative;
-    min-height: clamp(430px, 76svh, 760px);
-    overflow: hidden;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    gap: 0.38rem;
+    width: min(100% - 1.3rem, 560px);
+    margin-inline: auto;
+    min-height: min(100vw - 1.3rem, 560px);
+    max-height: min(100vw - 1.3rem, 560px);
+    aspect-ratio: 1 / 1;
+    overflow: visible;
     touch-action: pan-y pinch-zoom;
-    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
   }
 
   .team-card {
-    position: absolute;
-    inset: 0;
-    flex: 1 1 auto;
+    position: relative;
+    inset: auto;
+    flex: 1 1 100%;
     min-width: 0;
-    min-height: 100%;
+    min-height: 0;
     width: 100%;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(24px);
-    transition: opacity 450ms ease, transform 500ms var(--timing);
+    opacity: 1;
+    pointer-events: auto;
+    transform: none;
+    transition: transform 320ms var(--timing), box-shadow 320ms var(--timing);
   }
 
   .team-card:hover,
   .team-card:focus-within {
     flex: 1 1 auto;
-    border-color: #121212;
+    transform: none;
   }
 
-  .team-card.is-mobile-active {
-    opacity: 1;
-    transform: translateX(0);
-    pointer-events: auto;
-    z-index: 2;
+  .team-card--pepe {
+    display: none;
   }
 
   .team-photo {
-    min-width: 100%;
+    min-width: 0;
     width: 100%;
+    height: 100%;
   }
 
   .team-insta {
@@ -1017,9 +1015,7 @@ code {
     height: 20px;
   }
 
-  .team-copy,
-  .team-card:hover .team-copy,
-  .team-card:focus-within .team-copy {
+  .team-copy {
     position: absolute;
     left: 0;
     right: 0;
@@ -1032,14 +1028,56 @@ code {
     transform: translateY(100%);
     pointer-events: none;
     visibility: hidden;
-    background: linear-gradient(180deg, rgba(5, 5, 5, 0.15) 0%, rgba(5, 5, 5, 0.85) 35%, rgba(5, 5, 5, 0.96) 100%);
+    background: linear-gradient(180deg, rgba(5, 5, 5, 0) 0%, rgba(5, 5, 5, 0.2) 34%, rgba(5, 5, 5, 0.68) 72%, rgba(5, 5, 5, 0.9) 100%);
   }
 
-  .team-card.is-mobile-active .team-copy {
+  .team-card.is-selected {
+    transform: scale(1.16);
+    z-index: 8;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.42);
+  }
+
+  .team-card.is-selected .team-copy {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
     visibility: visible;
+  }
+
+  .team-card--joao {
+    order: 1;
+  }
+
+  .team-card--audrey {
+    order: 2;
+  }
+
+  .team-card--richard {
+    order: 3;
+  }
+
+  .team-card--ian {
+    order: 4;
+  }
+
+  .team-card--aldo {
+    order: 5;
+  }
+
+  .team-card--caio {
+    order: 6;
+  }
+
+  .team-card--simone {
+    order: 7;
+  }
+
+  .team-card--cassio {
+    order: 8;
+  }
+
+  .team-card--edgard {
+    order: 9;
   }
 
   .project-overlay {

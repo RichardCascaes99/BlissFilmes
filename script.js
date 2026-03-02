@@ -25,62 +25,73 @@ const mediaSlots = document.querySelectorAll(".media-slot");
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isMobileViewport = window.matchMedia("(max-width: 740px)").matches;
 
+const teamStrip = document.querySelector(".team-strip");
 const teamCards = Array.from(document.querySelectorAll(".team-strip .team-card"));
-const teamMobileQuery = window.matchMedia("(max-width: 740px)");
-let teamLoopInterval = null;
+if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
+  const teamMobileQuery = window.matchMedia("(max-width: 740px)");
+  const aldoIndex = teamCards.findIndex((card) => card.classList.contains("team-card--aldo"));
+  let selectedMobileIndex = aldoIndex >= 0 ? aldoIndex : 0;
 
-const setActiveMobileTeamCard = (activeIndex) => {
+  const clearMobileSelection = () => {
+    teamStrip.classList.remove("is-detail-open");
+    teamCards.forEach((card) => card.classList.remove("is-selected"));
+  };
+
+  const setMobileSelection = (index) => {
+    const card = teamCards[index];
+    if (!card) return;
+    if (card.offsetParent === null) return;
+
+    selectedMobileIndex = index;
+    teamCards.forEach((teamCard, cardIndex) => {
+      teamCard.classList.toggle("is-selected", cardIndex === index);
+    });
+    teamStrip.classList.add("is-detail-open");
+  };
+
+  const getInitialMobileIndex = () => {
+    if (selectedMobileIndex >= 0 && teamCards[selectedMobileIndex]?.offsetParent !== null) {
+      return selectedMobileIndex;
+    }
+
+    if (aldoIndex >= 0 && teamCards[aldoIndex]?.offsetParent !== null) {
+      return aldoIndex;
+    }
+
+    return teamCards.findIndex((card) => card.offsetParent !== null);
+  };
+
+  const syncTeamMobileMode = () => {
+    if (teamMobileQuery.matches) {
+      const initialIndex = getInitialMobileIndex();
+      if (initialIndex >= 0) {
+        setMobileSelection(initialIndex);
+      }
+      return;
+    }
+
+    clearMobileSelection();
+  };
+
   teamCards.forEach((card, index) => {
-    card.classList.toggle("is-mobile-active", index === activeIndex);
+    card.addEventListener("click", (event) => {
+      if (!teamMobileQuery.matches) return;
+      if (!(event.target instanceof Element)) return;
+      if (event.target.closest(".team-insta")) return;
+
+      event.preventDefault();
+      setMobileSelection(index);
+    });
   });
-};
 
-const stopMobileTeamLoop = () => {
-  if (teamLoopInterval !== null) {
-    window.clearInterval(teamLoopInterval);
-    teamLoopInterval = null;
+  if (typeof teamMobileQuery.addEventListener === "function") {
+    teamMobileQuery.addEventListener("change", syncTeamMobileMode);
+  } else if (typeof teamMobileQuery.addListener === "function") {
+    teamMobileQuery.addListener(syncTeamMobileMode);
   }
-  teamCards.forEach((card) => card.classList.remove("is-mobile-active"));
-};
 
-const startMobileTeamLoop = () => {
-  if (!teamCards.length) return;
-
-  stopMobileTeamLoop();
-  let activeIndex = 0;
-  setActiveMobileTeamCard(activeIndex);
-
-  if (prefersReducedMotion) return;
-
-  teamLoopInterval = window.setInterval(() => {
-    activeIndex = (activeIndex + 1) % teamCards.length;
-    setActiveMobileTeamCard(activeIndex);
-  }, 3400);
-};
-
-const syncTeamMobileMode = () => {
-  if (teamMobileQuery.matches) {
-    startMobileTeamLoop();
-  } else {
-    stopMobileTeamLoop();
-  }
-};
-
-if (typeof teamMobileQuery.addEventListener === "function") {
-  teamMobileQuery.addEventListener("change", syncTeamMobileMode);
-} else if (typeof teamMobileQuery.addListener === "function") {
-  teamMobileQuery.addListener(syncTeamMobileMode);
-}
-
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    stopMobileTeamLoop();
-    return;
-  }
   syncTeamMobileMode();
-});
-
-syncTeamMobileMode();
+}
 
 mediaSlots.forEach((slot) => {
   const image = slot.querySelector("img");
