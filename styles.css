@@ -1090,11 +1090,28 @@ code {
     box-shadow: 0 18px 38px rgba(0, 0, 0, 0.48);
   }
 
+  .team-card--joao.is-selected,
+  .team-card--audrey.is-selected,
+  .team-card--richard.is-selected {
+    transform: translateY(11%) scale(1.48);
+  }
+
   .team-card.is-selected .team-copy {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
     visibility: visible;
+  }
+
+  .team-card.is-selected .team-photo {
+    background: #060606;
+  }
+
+  .team-card.is-selected .team-photo img {
+    object-fit: contain;
+    object-position: 50% 50%;
+    transform: none;
+    transform-origin: 50% 50%;
   }
 
   .team-card--joao {
