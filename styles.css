@@ -774,6 +774,14 @@ main {
   font-size: clamp(0.96rem, 1.2vw, 1.08rem);
 }
 
+.project-tags {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: clamp(0.72rem, 0.95vw, 0.84rem);
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.64);
+}
+
 .media-slot {
   position: relative;
 }
@@ -1158,6 +1166,10 @@ code {
 
   .project-copy p {
     font-size: 0.94rem;
+  }
+
+  .project-tags {
+    font-size: 0.74rem;
   }
 
   .project-audio-toggle {
