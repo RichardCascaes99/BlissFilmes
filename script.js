@@ -29,58 +29,156 @@ const teamStrip = document.querySelector(".team-strip");
 const teamCards = Array.from(document.querySelectorAll(".team-strip .team-card"));
 if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
   const teamMobileQuery = window.matchMedia("(max-width: 740px)");
-  const aldoIndex = teamCards.findIndex((card) => card.classList.contains("team-card--aldo"));
-  let selectedMobileIndex = aldoIndex >= 0 ? aldoIndex : 0;
+  const slotByModifier = {
+    joao: 1,
+    audrey: 2,
+    richard: 3,
+    ian: 4,
+    aldo: 5,
+    caio: 6,
+    simone: 7,
+    cassio: 8,
+    edgard: 9,
+  };
+  const centerSlot = 5;
+  const ringSlots = [1, 2, 3, 6, 9, 8, 7, 4];
+  const mobileCards = teamCards.filter((card) => !card.classList.contains("team-card--pepe"));
+
+  mobileCards.forEach((card, index) => {
+    if (!card.dataset.teamKey) {
+      card.dataset.teamKey = `team-${index + 1}`;
+    }
+  });
+
+  const getCardSlot = (card) => {
+    const modifier = Object.keys(slotByModifier).find((name) => card.classList.contains(`team-card--${name}`));
+    if (modifier) return slotByModifier[modifier];
+    return null;
+  };
+
+  const initialCenterCard =
+    mobileCards.find((card) => getCardSlot(card) === centerSlot) ??
+    mobileCards.find((card) => card.classList.contains("team-card--aldo")) ??
+    mobileCards[0] ??
+    null;
+
+  const initialRingCards = ringSlots
+    .map((slot) => mobileCards.find((card) => getCardSlot(card) === slot))
+    .filter((card) => card instanceof HTMLElement);
+
+  let centerCard = initialCenterCard;
+  let ringCards = initialRingCards;
 
   const clearMobileSelection = () => {
     teamStrip.classList.remove("is-detail-open");
-    teamCards.forEach((card) => card.classList.remove("is-selected"));
-  };
-
-  const setMobileSelection = (index) => {
-    const card = teamCards[index];
-    if (!card) return;
-    if (card.offsetParent === null) return;
-
-    selectedMobileIndex = index;
-    teamCards.forEach((teamCard, cardIndex) => {
-      teamCard.classList.toggle("is-selected", cardIndex === index);
+    teamCards.forEach((card) => {
+      card.classList.remove("is-selected");
+      card.style.removeProperty("order");
+      card.style.removeProperty("--expand-shift-x");
+      card.style.removeProperty("--expand-shift-y");
     });
-    teamStrip.classList.add("is-detail-open");
   };
 
-  const getInitialMobileIndex = () => {
-    if (selectedMobileIndex >= 0 && teamCards[selectedMobileIndex]?.offsetParent !== null) {
-      return selectedMobileIndex;
+  const rotateRight = (items, steps = 1) => {
+    if (!items.length) return items;
+    const amount = ((steps % items.length) + items.length) % items.length;
+    if (!amount) return [...items];
+    return [...items.slice(-amount), ...items.slice(0, -amount)];
+  };
+
+  const setShiftForSlot = (card, slot) => {
+    const row = Math.floor((slot - 1) / 3);
+    const col = (slot - 1) % 3;
+    const shiftX = col === 0 ? 12 : col === 2 ? -12 : 0;
+    const shiftY = row === 0 ? 12 : row === 2 ? -12 : 0;
+    card.style.setProperty("--expand-shift-x", `${shiftX}%`);
+    card.style.setProperty("--expand-shift-y", `${shiftY}%`);
+  };
+
+  const normalizeLayoutState = () => {
+    if (!(centerCard instanceof HTMLElement)) {
+      centerCard = mobileCards[0] ?? null;
+    }
+    if (!(centerCard instanceof HTMLElement)) {
+      ringCards = [];
+      return;
     }
 
-    if (aldoIndex >= 0 && teamCards[aldoIndex]?.offsetParent !== null) {
-      return aldoIndex;
+    const others = mobileCards.filter((card) => card !== centerCard);
+    const normalizedRing = ringSlots
+      .map((slot) => ringCards.find((card) => getCardSlot(card) === slot))
+      .filter((card) => card instanceof HTMLElement && card !== centerCard);
+    const remaining = others.filter((card) => !normalizedRing.includes(card));
+    ringCards = [...normalizedRing, ...remaining].slice(0, ringSlots.length);
+  };
+
+  const applyMobileLayout = () => {
+    normalizeLayoutState();
+    if (!(centerCard instanceof HTMLElement)) return;
+
+    teamStrip.classList.add("is-detail-open");
+
+    mobileCards.forEach((card) => card.classList.remove("is-selected"));
+    centerCard.classList.add("is-selected");
+
+    centerCard.style.order = String(centerSlot);
+    setShiftForSlot(centerCard, centerSlot);
+
+    ringCards.forEach((card, index) => {
+      const slot = ringSlots[index];
+      if (!(card instanceof HTMLElement) || typeof slot !== "number") return;
+      card.style.order = String(slot);
+      setShiftForSlot(card, slot);
+    });
+  };
+
+  const moveToCenterAndRotateRight = (clickedCard) => {
+    if (!(clickedCard instanceof HTMLElement)) return;
+    if (!(centerCard instanceof HTMLElement)) {
+      centerCard = clickedCard;
+      applyMobileLayout();
+      return;
     }
 
-    return teamCards.findIndex((card) => card.offsetParent !== null);
+    if (clickedCard === centerCard) {
+      ringCards = rotateRight(ringCards, 1);
+      applyMobileLayout();
+      return;
+    }
+
+    const clickedRingIndex = ringCards.indexOf(clickedCard);
+    if (clickedRingIndex === -1) {
+      centerCard = clickedCard;
+      ringCards = rotateRight(mobileCards.filter((card) => card !== clickedCard), 1).slice(0, ringSlots.length);
+      applyMobileLayout();
+      return;
+    }
+
+    const previousCenter = centerCard;
+    const nextRing = [...ringCards];
+    nextRing[clickedRingIndex] = previousCenter;
+    centerCard = clickedCard;
+    ringCards = rotateRight(nextRing, 1);
+    applyMobileLayout();
   };
 
   const syncTeamMobileMode = () => {
     if (teamMobileQuery.matches) {
-      const initialIndex = getInitialMobileIndex();
-      if (initialIndex >= 0) {
-        setMobileSelection(initialIndex);
-      }
+      applyMobileLayout();
       return;
     }
 
     clearMobileSelection();
   };
 
-  teamCards.forEach((card, index) => {
+  teamCards.forEach((card) => {
     card.addEventListener("click", (event) => {
       if (!teamMobileQuery.matches) return;
       if (!(event.target instanceof Element)) return;
       if (event.target.closest(".team-insta")) return;
 
       event.preventDefault();
-      setMobileSelection(index);
+      moveToCenterAndRotateRight(card);
     });
   });
 
