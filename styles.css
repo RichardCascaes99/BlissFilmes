@@ -435,6 +435,7 @@ main {
   height: 100%;
   display: block;
   object-fit: cover;
+  object-position: 50% 22%;
   backface-visibility: hidden;
   transform: translateZ(0);
 }
@@ -560,48 +561,6 @@ main {
 
 .team-card--richard .team-photo {
   background: #ffffff;
-}
-
-.team-card--richard .team-photo img {
-  object-position: 50% 19%;
-  transform: translateY(-2%) scale(2);
-  transform-origin: 50% 16%;
-}
-
-.team-card--aldo .team-photo img {
-  object-position: 50% 24%;
-}
-
-.team-card--ian .team-photo img {
-  object-position: 50% 22%;
-  transform: translateY(1%) scale(2);
-  transform-origin: 50% 16%;
-}
-
-.team-card--edgard .team-photo img {
-  object-position: 50% 20%;
-  transform: scale(1.2);
-  transform-origin: 50% 15%;
-}
-
-.team-card--joao .team-photo img {
-  object-position: 50% 20%;
-}
-
-.team-card--audrey .team-photo img {
-  object-position: 50% 21%;
-}
-
-.team-card--caio .team-photo img {
-  object-position: 50% 23%;
-}
-
-.team-card--simone .team-photo img {
-  object-position: 50% 18%;
-}
-
-.team-card--cassio .team-photo img {
-  object-position: 50% 21%;
 }
 
 .team-card:hover,
@@ -1090,12 +1049,6 @@ code {
     box-shadow: 0 18px 38px rgba(0, 0, 0, 0.48);
   }
 
-  .team-card--joao.is-selected,
-  .team-card--audrey.is-selected,
-  .team-card--richard.is-selected {
-    transform: translateY(11%) scale(1.48);
-  }
-
   .team-card.is-selected .team-copy {
     opacity: 1;
     transform: translateY(0);
@@ -1105,13 +1058,6 @@ code {
 
   .team-card.is-selected .team-photo {
     background: #060606;
-  }
-
-  .team-card.is-selected .team-photo img {
-    object-fit: contain;
-    object-position: 50% 50%;
-    transform: none;
-    transform-origin: 50% 50%;
   }
 
   .team-card--joao {
