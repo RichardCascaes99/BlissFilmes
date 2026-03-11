@@ -976,7 +976,7 @@ code {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 2.3rem);
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 4rem);
     padding-bottom: 0;
   }
 
