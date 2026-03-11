@@ -1044,7 +1044,7 @@ code {
   }
 
   .team-card.is-selected {
-    transform: scale(1.48);
+    transform: translate(var(--expand-shift-x, 0), var(--expand-shift-y, 0)) scale(1.48);
     z-index: 8;
     box-shadow: 0 18px 38px rgba(0, 0, 0, 0.48);
   }
@@ -1062,38 +1062,56 @@ code {
 
   .team-card--joao {
     order: 1;
+    --expand-shift-x: 12%;
+    --expand-shift-y: 12%;
   }
 
   .team-card--audrey {
     order: 2;
+    --expand-shift-x: 0%;
+    --expand-shift-y: 12%;
   }
 
   .team-card--richard {
     order: 3;
+    --expand-shift-x: -12%;
+    --expand-shift-y: 12%;
   }
 
   .team-card--ian {
     order: 4;
+    --expand-shift-x: 12%;
+    --expand-shift-y: 0%;
   }
 
   .team-card--aldo {
     order: 5;
+    --expand-shift-x: 0%;
+    --expand-shift-y: 0%;
   }
 
   .team-card--caio {
     order: 6;
+    --expand-shift-x: -12%;
+    --expand-shift-y: 0%;
   }
 
   .team-card--simone {
     order: 7;
+    --expand-shift-x: 12%;
+    --expand-shift-y: -12%;
   }
 
   .team-card--cassio {
     order: 8;
+    --expand-shift-x: 0%;
+    --expand-shift-y: -12%;
   }
 
   .team-card--edgard {
     order: 9;
+    --expand-shift-x: -12%;
+    --expand-shift-y: -12%;
   }
 
   .project-overlay {
