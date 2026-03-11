@@ -44,12 +44,6 @@ if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
   const ringSlots = [1, 2, 3, 6, 9, 8, 7, 4];
   const mobileCards = teamCards.filter((card) => !card.classList.contains("team-card--pepe"));
 
-  mobileCards.forEach((card, index) => {
-    if (!card.dataset.teamKey) {
-      card.dataset.teamKey = `team-${index + 1}`;
-    }
-  });
-
   const getCardSlot = (card) => {
     const modifier = Object.keys(slotByModifier).find((name) => card.classList.contains(`team-card--${name}`));
     if (modifier) return slotByModifier[modifier];
@@ -74,8 +68,9 @@ if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
     teamCards.forEach((card) => {
       card.classList.remove("is-selected");
       card.style.removeProperty("order");
-      card.style.removeProperty("--expand-shift-x");
-      card.style.removeProperty("--expand-shift-y");
+      card.style.removeProperty("--flip-x");
+      card.style.removeProperty("--flip-y");
+      card.style.removeProperty("--selected-scale");
     });
   };
 
@@ -84,15 +79,6 @@ if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
     const amount = ((steps % items.length) + items.length) % items.length;
     if (!amount) return [...items];
     return [...items.slice(-amount), ...items.slice(0, -amount)];
-  };
-
-  const setShiftForSlot = (card, slot) => {
-    const row = Math.floor((slot - 1) / 3);
-    const col = (slot - 1) % 3;
-    const shiftX = col === 0 ? 12 : col === 2 ? -12 : 0;
-    const shiftY = row === 0 ? 12 : row === 2 ? -12 : 0;
-    card.style.setProperty("--expand-shift-x", `${shiftX}%`);
-    card.style.setProperty("--expand-shift-y", `${shiftY}%`);
   };
 
   const normalizeLayoutState = () => {
@@ -112,23 +98,74 @@ if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
     ringCards = [...normalizedRing, ...remaining].slice(0, ringSlots.length);
   };
 
-  const applyMobileLayout = () => {
-    normalizeLayoutState();
+  const applyLayoutStyles = () => {
     if (!(centerCard instanceof HTMLElement)) return;
 
     teamStrip.classList.add("is-detail-open");
-
     mobileCards.forEach((card) => card.classList.remove("is-selected"));
     centerCard.classList.add("is-selected");
 
     centerCard.style.order = String(centerSlot);
-    setShiftForSlot(centerCard, centerSlot);
+    centerCard.style.setProperty("--selected-scale", "1.48");
 
     ringCards.forEach((card, index) => {
       const slot = ringSlots[index];
       if (!(card instanceof HTMLElement) || typeof slot !== "number") return;
       card.style.order = String(slot);
-      setShiftForSlot(card, slot);
+      card.style.removeProperty("--selected-scale");
+    });
+
+    const knownCards = new Set([centerCard, ...ringCards]);
+    mobileCards.forEach((card) => {
+      if (knownCards.has(card)) return;
+      card.style.removeProperty("order");
+      card.style.removeProperty("--selected-scale");
+    });
+  };
+
+  const animateLayoutChange = () => {
+    const visibleCards = mobileCards.filter((card) => card.offsetParent !== null);
+    const firstRects = new Map();
+
+    visibleCards.forEach((card) => {
+      firstRects.set(card, card.getBoundingClientRect());
+      card.style.setProperty("--flip-x", "0px");
+      card.style.setProperty("--flip-y", "0px");
+    });
+
+    applyLayoutStyles();
+
+    visibleCards.forEach((card) => {
+      const first = firstRects.get(card);
+      if (!first) return;
+      const last = card.getBoundingClientRect();
+      const deltaX = first.left - last.left;
+      const deltaY = first.top - last.top;
+      if (Math.abs(deltaX) < 0.5 && Math.abs(deltaY) < 0.5) return;
+      card.style.setProperty("--flip-x", `${deltaX}px`);
+      card.style.setProperty("--flip-y", `${deltaY}px`);
+    });
+
+    teamStrip.getBoundingClientRect();
+    visibleCards.forEach((card) => {
+      card.style.setProperty("--flip-x", "0px");
+      card.style.setProperty("--flip-y", "0px");
+    });
+  };
+
+  const applyMobileLayout = (animate = false) => {
+    normalizeLayoutState();
+    if (!(centerCard instanceof HTMLElement)) return;
+
+    if (animate && teamMobileQuery.matches && !prefersReducedMotion) {
+      animateLayoutChange();
+      return;
+    }
+
+    applyLayoutStyles();
+    mobileCards.forEach((card) => {
+      card.style.setProperty("--flip-x", "0px");
+      card.style.setProperty("--flip-y", "0px");
     });
   };
 
@@ -136,13 +173,13 @@ if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
     if (!(clickedCard instanceof HTMLElement)) return;
     if (!(centerCard instanceof HTMLElement)) {
       centerCard = clickedCard;
-      applyMobileLayout();
+      applyMobileLayout(true);
       return;
     }
 
     if (clickedCard === centerCard) {
       ringCards = rotateRight(ringCards, 1);
-      applyMobileLayout();
+      applyMobileLayout(true);
       return;
     }
 
@@ -150,7 +187,7 @@ if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
     if (clickedRingIndex === -1) {
       centerCard = clickedCard;
       ringCards = rotateRight(mobileCards.filter((card) => card !== clickedCard), 1).slice(0, ringSlots.length);
-      applyMobileLayout();
+      applyMobileLayout(true);
       return;
     }
 
@@ -159,12 +196,12 @@ if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
     nextRing[clickedRingIndex] = previousCenter;
     centerCard = clickedCard;
     ringCards = rotateRight(nextRing, 1);
-    applyMobileLayout();
+    applyMobileLayout(true);
   };
 
   const syncTeamMobileMode = () => {
     if (teamMobileQuery.matches) {
-      applyMobileLayout();
+      applyMobileLayout(false);
       return;
     }
 
