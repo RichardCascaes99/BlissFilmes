@@ -254,6 +254,38 @@ mediaSlots.forEach((slot) => {
 });
 
 const projectVideos = document.querySelectorAll(".project-media video");
+const mobileVideoQuery = window.matchMedia("(max-width: 740px)");
+
+const requestVideoFullscreen = (video) => {
+  if (!(video instanceof HTMLVideoElement)) return;
+
+  const anyVideo = /** @type {any} */ (video);
+  const anyDocument = /** @type {any} */ (document);
+  const isAlreadyFullscreen =
+    document.fullscreenElement === video ||
+    anyDocument.webkitFullscreenElement === video ||
+    anyVideo.webkitDisplayingFullscreen === true;
+
+  if (isAlreadyFullscreen) return;
+
+  if (typeof video.requestFullscreen === "function") {
+    video.requestFullscreen().catch(() => {});
+    return;
+  }
+
+  if (typeof anyVideo.webkitEnterFullscreen === "function") {
+    try {
+      anyVideo.webkitEnterFullscreen();
+    } catch (_) {
+      // no-op
+    }
+    return;
+  }
+
+  if (typeof anyVideo.webkitRequestFullscreen === "function") {
+    anyVideo.webkitRequestFullscreen();
+  }
+};
 
 if (projectVideos.length > 0) {
   if ("IntersectionObserver" in window && !prefersReducedMotion) {
@@ -282,6 +314,17 @@ if (projectVideos.length > 0) {
       video.controls = true;
     });
   }
+
+  projectVideos.forEach((video) => {
+    if (video.dataset.fullscreenBound === "true") return;
+
+    video.addEventListener("click", () => {
+      if (!mobileVideoQuery.matches) return;
+      requestVideoFullscreen(video);
+    });
+
+    video.dataset.fullscreenBound = "true";
+  });
 }
 
 const projectScreens = document.querySelectorAll(".project-screen");
@@ -355,6 +398,13 @@ if (projectScreens.length > 0) {
         const selectedIndex = Math.max(0, Math.min(state.activeTripleIndex, videos.length - 1));
         state.activeTripleIndex = selectedIndex;
 
+        if (
+          typeof state.applyTripleLayout === "function" &&
+          state.currentTripleIndex !== selectedIndex
+        ) {
+          state.applyTripleLayout(selectedIndex, { animated: true, syncAudio: false, forcePlay: false });
+        }
+
         videos.forEach((video, index) => {
           const shouldPlayAudio = index === selectedIndex;
           video.muted = !shouldPlayAudio;
@@ -422,6 +472,12 @@ if (projectScreens.length > 0) {
     const individualToggles = Array.from(
       screen.querySelectorAll(".project-audio-toggle-individual")
     ).filter((toggle) => toggle instanceof HTMLButtonElement);
+    const tripleMedia = screen.querySelector(".project-media--triple");
+    const tripleTrack = tripleMedia?.querySelector(".triple-video-track");
+    const tripleCells = Array.from(
+      tripleTrack?.querySelectorAll(".triple-video-cell") ?? []
+    ).filter((cell) => cell instanceof HTMLElement);
+    const tripleNext = tripleMedia?.querySelector(".triple-next");
 
     const getVideoForIndividualToggle = (toggle, index, sourceVideos = videos) => {
       const videoInCell = toggle.closest(".triple-video-cell")?.querySelector("video");
@@ -444,7 +500,119 @@ if (projectScreens.length > 0) {
       groupToggle,
       individualToggles,
       activeTripleIndex: individualToggles.length > 0 ? 0 : -1,
+      currentTripleIndex: -1,
+      applyTripleLayout: null,
     };
+
+    if (
+      tripleMedia instanceof HTMLElement &&
+      tripleTrack instanceof HTMLElement &&
+      tripleCells.length > 0 &&
+      state.individualToggles.length > 0
+    ) {
+      const setTrackTransitionEnabled = (enabled) => {
+        if (enabled) {
+          tripleTrack.style.removeProperty("transition");
+          return;
+        }
+        tripleTrack.style.setProperty("transition", "none");
+      };
+
+      const applyTripleLayout = (
+        nextIndex,
+        { animated = true, syncAudio = true, forcePlay = false } = {}
+      ) => {
+        const total = tripleCells.length;
+        if (!total) return;
+
+        const normalizedIndex = ((nextIndex % total) + total) % total;
+        state.activeTripleIndex = normalizedIndex;
+        state.currentTripleIndex = normalizedIndex;
+
+        if (mobileVideoQuery.matches) {
+          setTrackTransitionEnabled(animated && !prefersReducedMotion);
+          const targetCell = tripleCells[normalizedIndex];
+          const offsetLeft = targetCell?.offsetLeft ?? 0;
+          tripleTrack.style.setProperty("transform", `translate3d(${-offsetLeft}px, 0, 0)`);
+
+          if (!animated || prefersReducedMotion) {
+            tripleTrack.getBoundingClientRect();
+            tripleTrack.style.removeProperty("transition");
+          }
+        } else {
+          tripleTrack.style.removeProperty("transition");
+          tripleTrack.style.setProperty("transform", "translate3d(0, 0, 0)");
+        }
+
+        state.videos.forEach((video, index) => {
+          video.loop = !mobileVideoQuery.matches;
+          if (!mobileVideoQuery.matches) return;
+
+          const shouldStayActive = index === normalizedIndex;
+          if (shouldStayActive && (forcePlay || screen === activeScreen)) {
+            const playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === "function") {
+              playPromise.catch(() => {});
+            }
+          } else {
+            video.pause();
+          }
+        });
+
+        if (tripleNext instanceof HTMLButtonElement) {
+          tripleNext.hidden = !mobileVideoQuery.matches;
+        }
+
+        if (syncAudio) {
+          syncAudioState();
+        }
+      };
+
+      state.applyTripleLayout = applyTripleLayout;
+      applyTripleLayout(state.activeTripleIndex, { animated: false, syncAudio: false, forcePlay: false });
+
+      if (tripleNext instanceof HTMLButtonElement) {
+        tripleNext.hidden = !mobileVideoQuery.matches;
+        tripleNext.addEventListener("click", () => {
+          applyTripleLayout(state.activeTripleIndex + 1, {
+            animated: true,
+            syncAudio: true,
+            forcePlay: true,
+          });
+        });
+      }
+
+      state.videos.forEach((video, index) => {
+        video.addEventListener("ended", () => {
+          if (!mobileVideoQuery.matches) return;
+          if (index !== state.activeTripleIndex) return;
+
+          applyTripleLayout(index + 1, {
+            animated: true,
+            syncAudio: true,
+            forcePlay: true,
+          });
+        });
+      });
+
+      const syncTripleViewportMode = () => {
+        applyTripleLayout(
+          state.activeTripleIndex >= 0 ? state.activeTripleIndex : 0,
+          { animated: false, syncAudio: true, forcePlay: false }
+        );
+      };
+
+      if (typeof mobileVideoQuery.addEventListener === "function") {
+        mobileVideoQuery.addEventListener("change", syncTripleViewportMode);
+      } else if (typeof mobileVideoQuery.addListener === "function") {
+        mobileVideoQuery.addListener(syncTripleViewportMode);
+      }
+
+      window.addEventListener("resize", () => {
+        if (!mobileVideoQuery.matches) return;
+        syncTripleViewportMode();
+      });
+    }
 
     if (groupToggle instanceof HTMLButtonElement) {
       groupToggle.addEventListener("click", () => {
@@ -461,8 +629,12 @@ if (projectScreens.length > 0) {
       toggle.addEventListener("click", () => {
         globalAudioEnabled = true;
         activeScreen = screen;
-        state.activeTripleIndex = index;
-        syncAudioState();
+        if (typeof state.applyTripleLayout === "function") {
+          state.applyTripleLayout(index, { animated: true, syncAudio: true, forcePlay: true });
+        } else {
+          state.activeTripleIndex = index;
+          syncAudioState();
+        }
       });
     });
 
