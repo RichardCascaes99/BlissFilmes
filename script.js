@@ -42,7 +42,7 @@ if (teamStrip instanceof HTMLElement && teamCards.length > 0) {
   };
   const centerSlot = 5;
   const ringSlots = [1, 2, 3, 6, 9, 8, 7, 4];
-  const mobileCards = teamCards.filter((card) => !card.classList.contains("team-card--pepe"));
+  const mobileCards = [...teamCards];
 
   const getCardSlot = (card) => {
     const modifier = Object.keys(slotByModifier).find((name) => card.classList.contains(`team-card--${name}`));
